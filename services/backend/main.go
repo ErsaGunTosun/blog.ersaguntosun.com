@@ -13,6 +13,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	if err := postgresDB.Init(); err != nil {
+		log.Fatal(err)
+	}
+
 	server := api.NewAPIServer(":8080", postgresDB)
 	server.Run()
 }
