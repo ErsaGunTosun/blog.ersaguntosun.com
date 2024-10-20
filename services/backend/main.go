@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"main.go/api"
+	"main.go/config"
 	"main.go/database"
 )
 
@@ -17,6 +18,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	server := api.NewAPIServer(":8080", postgresDB)
+	server := api.NewAPIServer(config.Configs.ServerPort, postgresDB)
 	server.Run()
 }

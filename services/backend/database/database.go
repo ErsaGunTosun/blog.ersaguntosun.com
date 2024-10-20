@@ -2,8 +2,11 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
+	"log"
 
 	_ "github.com/lib/pq"
+	"main.go/config"
 )
 
 type PostgresDB struct {
@@ -34,7 +37,7 @@ func (p *PostgresDB) Init() error {
 }
 
 func NewPostgresDB() (*PostgresDB, error) {
-	connStr := "user=postgres dbname=postgres password=postgres sslmode=disable"
+	connStr := fmt.Sprintf("user=postgres dbname=postgres password=%s sslmode=disable", config.Configs.DBPass)
 	db, err := sql.Open("postgres", connStr)
 
 	if err != nil {
@@ -44,6 +47,8 @@ func NewPostgresDB() (*PostgresDB, error) {
 	if err := db.Ping(); err != nil {
 		return nil, err
 	}
+
+	log.Println("successfully connected to database")
 
 	return &PostgresDB{
 		db: db,
