@@ -6,7 +6,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"main.go/database"
-	"main.go/handlers"
+	"main.go/handlers/comment"
+	"main.go/handlers/post"
+	"main.go/handlers/user"
 )
 
 type APIServer struct {
@@ -25,8 +27,15 @@ func (a *APIServer) Run() error {
 	router := mux.NewRouter()
 	subrouter := router.PathPrefix("/api").Subrouter()
 
-	handler := handlers.NewHandler()
-	handler.RegisterRoutes(subrouter)
+	userStore := user.NewStore(a.db)
+	userHandler := user.NewHandler(userStore)
+	userHandler.RegisterRoutes(subrouter)
+
+	postHandler := post.NewHandler()
+	postHandler.RegisterRoutes(subrouter)
+
+	commentHandler := comment.NewHandler()
+	commentHandler.RegisterRoutes(subrouter)
 
 	log.Println("Server is running on", a.addr)
 
