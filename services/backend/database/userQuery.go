@@ -29,7 +29,6 @@ func (p *PostgresDB) GetUserByEmailDB(e string) (*types.User, error) {
 			return nil, err
 		}
 	}
-	fmt.Println(u.Email)
 
 	if u.ID == 0 {
 		return nil, fmt.Errorf("user not found")
