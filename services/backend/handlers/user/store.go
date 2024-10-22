@@ -14,7 +14,7 @@ func NewStore(db *database.PostgresDB) *Store {
 }
 
 func (s *Store) CreateUser(user *types.User) error {
-	return nil
+	return s.db.CreateUserDB(user)
 }
 
 func (s *Store) GetUserByID(id int) (*types.User, error) {
@@ -24,7 +24,5 @@ func (s *Store) GetUserByID(id int) (*types.User, error) {
 }
 
 func (s *Store) GetUserByEmail(email string) (*types.User, error) {
-	user := &types.User{}
-
-	return user, nil
+	return s.db.GetUserByEmailDB(email)
 }

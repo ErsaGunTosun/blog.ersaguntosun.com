@@ -4,7 +4,7 @@ type User struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
-	Emaill   string `json:"email"`
+	Email    string `json:"email"`
 	Role     string `json:"role"`
 }
 
@@ -39,4 +39,11 @@ type UserStore interface {
 	CreateUser(user *User) error
 	GetUserByID(id int) (*User, error)
 	GetUserByEmail(email string) (*User, error)
+}
+
+// Payload
+type RegisterUserPayload struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
 }
