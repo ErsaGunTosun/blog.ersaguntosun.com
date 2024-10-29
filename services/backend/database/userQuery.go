@@ -53,3 +53,24 @@ func scanRowsIntoUser(rows *sql.Rows) (*types.User, error) {
 
 	return user, nil
 }
+
+func (p *PostgresDB) GetUserByIDDB(id int) (*types.User, error) {
+	rows, err := p.db.Query("SELECT * FROM users WHERE id = $1", id)
+	if err != nil {
+		return nil, err
+	}
+
+	u := new(types.User)
+	for rows.Next() {
+		u, err = scanRowsIntoUser(rows)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if u.ID == 0 {
+		return nil, fmt.Errorf("user not found")
+	}
+
+	return u, nil
+}

@@ -6,7 +6,7 @@ function Content() {
         <div className="hidden xl:flex xl:fixed xl:right-0 w-3/12 h-full items-start pt-40 justify-end px-20">
             <div className="h-52 w-full text-start text-sm">
                 <p className="font-bold">Content</p>
-                <ul class="max-w-md space-y-1  text-black list-none list-inside font-light">
+                <ul className="max-w-md space-y-1  text-black list-none list-inside font-light">
                     <li className="cursor-pointer">
                         Overview
                     </li>
@@ -22,7 +22,7 @@ function Content() {
                     <li className="cursor-pointer" >
                         Final thoughts
                         <div className="ms-5">
-                            <ul class="max-w-md space-y-1  text-black list-none list-inside font-light">
+                            <ul className="max-w-md space-y-1  text-black list-none list-inside font-light">
                                 <li className="cursor-pointer">
                                     Overview
                                 </li>

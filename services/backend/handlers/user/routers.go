@@ -3,7 +3,10 @@ package user
 import (
 	"fmt"
 	"net/http"
+	"strconv"
+	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/mux"
 	"main.go/auth"
 	"main.go/config"
@@ -24,6 +27,7 @@ func NewHandler(s types.UserStore) *UserHandler {
 func (h *UserHandler) RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/auth/login", h.loginHandler).Methods(http.MethodPost)
 	router.HandleFunc("/auth/register", h.registerHandler).Methods(http.MethodPost)
+	router.HandleFunc("/auth/verify", h.verifyHandler).Methods(http.MethodGet)
 }
 
 func (h *UserHandler) loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -52,6 +56,16 @@ func (h *UserHandler) loginHandler(w http.ResponseWriter, r *http.Request) {
 		utils.WriteError(w, http.StatusInternalServerError, err)
 		return
 	}
+
+	cookie := &http.Cookie{
+		Name:     "token",
+		Value:    token,
+		Expires:  time.Now().Add(time.Second * time.Duration(config.Configs.JWTExp)),
+		HttpOnly: true,
+		Secure:   true,
+		Path:     "/",
+	}
+	http.SetCookie(w, cookie)
 
 	utils.WriteJSON(w, http.StatusOK, map[string]string{"token": token})
 }
@@ -91,4 +105,52 @@ func (h *UserHandler) registerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.WriteJSON(w, http.StatusCreated, nil)
+}
+
+func (h *UserHandler) verifyHandler(w http.ResponseWriter, r *http.Request) {
+	headerToken := r.Header.Get("Authorization")
+	cookieToken, err := r.Cookie("token")
+	if err != nil {
+		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("not authorized"))
+		return
+	}
+
+	if headerToken != cookieToken.Value {
+		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("not authorized"))
+		utils.DeleteToken(w)
+		return
+	}
+
+	token, err := auth.ValidateJWT(cookieToken.Value)
+
+	if err != nil {
+		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("not authorized"))
+		utils.DeleteToken(w)
+		return
+	}
+	if !token.Valid {
+		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("not authorized"))
+		utils.DeleteToken(w)
+		return
+	}
+
+	claims := token.Claims.(jwt.MapClaims)
+	str := claims["userID"].(string)
+	userID, err := strconv.Atoi(str)
+
+	if err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, err)
+		utils.DeleteToken(w)
+		return
+	}
+
+	_, err = h.store.GetUserByID(userID)
+
+	if err != nil {
+		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("not authorized"))
+		utils.DeleteToken(w)
+		return
+	}
+
+	utils.WriteJSON(w, http.StatusOK, nil)
 }

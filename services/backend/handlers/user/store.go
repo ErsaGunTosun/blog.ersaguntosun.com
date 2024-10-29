@@ -18,9 +18,7 @@ func (s *Store) CreateUser(user *types.User) error {
 }
 
 func (s *Store) GetUserByID(id int) (*types.User, error) {
-	user := &types.User{}
-
-	return user, nil
+	return s.db.GetUserByIDDB(id)
 }
 
 func (s *Store) GetUserByEmail(email string) (*types.User, error) {

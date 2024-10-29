@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -22,4 +23,14 @@ func CreateJWT(secret []byte, userID int) (string, error) {
 	}
 
 	return tokenString, err
+}
+
+func ValidateJWT(tokenString string) (*jwt.Token, error) {
+	return jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return []byte(config.Configs.JWTSecret), nil
+	})
 }
