@@ -19,6 +19,7 @@ func ParseJSON(r *http.Request, v any) error {
 
 func WriteJSON(w http.ResponseWriter, status int, v any) error {
 	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	w.WriteHeader(status)
 
 	return json.NewEncoder(w).Encode(v)

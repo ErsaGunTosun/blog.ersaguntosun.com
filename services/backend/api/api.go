@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"main.go/database"
 	"main.go/handlers/comment"
 	"main.go/handlers/post"
@@ -39,5 +40,6 @@ func (a *APIServer) Run() error {
 
 	log.Println("Server is running on", a.addr)
 
-	return http.ListenAndServe(a.addr, router)
+	handler := cors.Default().Handler(router)
+	return http.ListenAndServe(a.addr, handler)
 }
