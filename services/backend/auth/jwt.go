@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 	"time"
 
@@ -33,4 +34,34 @@ func ValidateJWT(tokenString string) (*jwt.Token, error) {
 
 		return []byte(config.Configs.JWTSecret), nil
 	})
+}
+
+func AuthUserJWT(w http.ResponseWriter, r *http.Request) (int, error) {
+	headerToken := r.Header.Get("Authorization")
+	cookieToken, err := r.Cookie("token")
+	if err != nil {
+		return 0, fmt.Errorf("unauthorized")
+	}
+
+	if headerToken != cookieToken.Value {
+		return 0, fmt.Errorf("unauthorized")
+	}
+
+	token, err := ValidateJWT(cookieToken.Value)
+
+	if err != nil {
+		return 0, fmt.Errorf("unauthorized")
+	}
+	if !token.Valid {
+		return 0, fmt.Errorf("unauthorized")
+	}
+	claims := token.Claims.(jwt.MapClaims)
+	str := claims["userID"].(string)
+	userID, err := strconv.Atoi(str)
+
+	if err != nil {
+		return 0, fmt.Errorf("unauthorized")
+	}
+
+	return userID, nil
 }

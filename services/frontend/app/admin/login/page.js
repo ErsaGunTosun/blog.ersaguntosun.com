@@ -3,6 +3,7 @@ import React from 'react'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
+
 function LoginPage() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -16,7 +17,7 @@ function LoginPage() {
           axios({
             method: 'get',
             url: `http://localhost:8080/api/auth/verify`,
-            withCredentials: false,
+            withCredentials: true,
           },)
             .then((res) => {
               if(res.status === 200){
@@ -40,7 +41,7 @@ function LoginPage() {
             axios({
                 method: 'post',
                 url: `http://localhost:8080/api/auth/login`,
-                withCredentials: false,
+                withCredentials: true,
                 headers: {
                     'Content-Type': 'application/json',
                 },

@@ -1,5 +1,7 @@
 package types
 
+import "time"
+
 type User struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`
@@ -9,12 +11,12 @@ type User struct {
 }
 
 type Post struct {
-	ID        int    `json:"id"`
-	Title     string `json:"title"`
-	Content   string `json:"content"`
-	AuthorID  int    `json:"author_id"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
+	ID        int       `json:"id"`
+	Title     string    `json:"title"`
+	Content   string    `json:"content"`
+	AuthorID  int       `json:"author_id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type Comment struct {
@@ -40,6 +42,16 @@ type UserStore interface {
 	GetUserByID(id int) (*User, error)
 	GetUserByEmail(email string) (*User, error)
 }
+type PostStore interface {
+	GetPosts() ([]*Post, error)
+	GetPostByID(id int) (*Post, error)
+	CreatePost(post *Post) error
+	UpdatePost(post *Post) error
+	DeletePost(id int) error
+
+	// user
+	GetUserByID(userID int) (*User, error)
+}
 
 // Payload
 type RegisterUserPayload struct {
@@ -51,4 +63,9 @@ type RegisterUserPayload struct {
 type LoginUserPayload struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type CreatePostPayload struct {
+	Title   string `json:"title"`
+	Content string `json:"content"`
 }

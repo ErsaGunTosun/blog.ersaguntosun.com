@@ -66,6 +66,7 @@ func (h *UserHandler) loginHandler(w http.ResponseWriter, r *http.Request) {
 		Path:     "/",
 	}
 	http.SetCookie(w, cookie)
+	r.AddCookie(cookie)
 
 	utils.WriteJSON(w, http.StatusOK, map[string]string{"token": token})
 }
@@ -117,7 +118,7 @@ func (h *UserHandler) verifyHandler(w http.ResponseWriter, r *http.Request) {
 
 	if headerToken != cookieToken.Value {
 		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("not authorized"))
-		utils.DeleteToken(w)
+
 		return
 	}
 
@@ -125,12 +126,12 @@ func (h *UserHandler) verifyHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("not authorized"))
-		utils.DeleteToken(w)
+
 		return
 	}
 	if !token.Valid {
 		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("not authorized"))
-		utils.DeleteToken(w)
+
 		return
 	}
 

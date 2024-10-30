@@ -32,7 +32,8 @@ func (a *APIServer) Run() error {
 	userHandler := user.NewHandler(userStore)
 	userHandler.RegisterRoutes(subrouter)
 
-	postHandler := post.NewHandler()
+	postStore := post.NewStore(a.db)
+	postHandler := post.NewHandler(postStore)
 	postHandler.RegisterRoutes(subrouter)
 
 	commentHandler := comment.NewHandler()
@@ -40,6 +41,12 @@ func (a *APIServer) Run() error {
 
 	log.Println("Server is running on", a.addr)
 
-	handler := cors.Default().Handler(router)
+	c := cors.New(cors.Options{
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowCredentials: true,
+	})
+	handler := c.Handler(router)
 	return http.ListenAndServe(a.addr, handler)
 }
