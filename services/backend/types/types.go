@@ -69,3 +69,8 @@ type CreatePostPayload struct {
 	Title   string `json:"title"`
 	Content string `json:"content"`
 }
+
+type UpdatePostPayload struct {
+	Title   string `json:"title"`
+	Content string `json:"content"`
+}

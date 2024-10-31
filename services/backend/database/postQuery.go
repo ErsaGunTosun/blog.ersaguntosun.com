@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 
 	"main.go/types"
 )
@@ -23,7 +24,7 @@ func (p *PostgresDB) GetPostsDB() ([]*types.Post, error) {
 
 	products := make([]*types.Post, 0)
 	for rows.Next() {
-		p, err := scanRowsIntoProduct(rows)
+		p, err := scanRowsIntoPost(rows)
 		if err != nil {
 			return nil, err
 		}
@@ -34,7 +35,48 @@ func (p *PostgresDB) GetPostsDB() ([]*types.Post, error) {
 	return products, nil
 }
 
-func scanRowsIntoProduct(rows *sql.Rows) (*types.Post, error) {
+func (p *PostgresDB) GetPostByIDDB(id int) (*types.Post, error) {
+	query := "SELECT * FROM posts WHERE id = $1"
+	rows, err := p.db.Query(query, id)
+	if err != nil {
+		return nil, err
+	}
+
+	post := new(types.Post)
+	for rows.Next() {
+		post, err = scanRowsIntoPost(rows)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if post.ID == 0 {
+		return nil, fmt.Errorf("post not found")
+	}
+
+	return post, nil
+
+}
+
+func (p *PostgresDB) UpdatePostByIDDB(i *types.Post) error {
+	query := "UPDATE posts SET title = $1, content = $2 WHERE id = $3"
+	_, err := p.db.Query(query, i.Title, i.Content, i.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *PostgresDB) DeletePostByIDDB(id int) error {
+	query := "DELETE FROM posts WHERE id = $1"
+	_, err := p.db.Query(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func scanRowsIntoPost(rows *sql.Rows) (*types.Post, error) {
 	post := new(types.Post)
 
 	err := rows.Scan(

@@ -18,8 +18,7 @@ func (s *PostStore) GetPosts() ([]*types.Post, error) {
 }
 
 func (s *PostStore) GetPostByID(id int) (*types.Post, error) {
-	// Get a post by ID
-	return nil, nil
+	return s.db.GetPostByIDDB(id)
 }
 
 func (s *PostStore) CreatePost(post *types.Post) error {
@@ -27,13 +26,11 @@ func (s *PostStore) CreatePost(post *types.Post) error {
 }
 
 func (s *PostStore) UpdatePost(post *types.Post) error {
-	// Update a post by ID
-	return nil
+	return s.db.UpdatePostByIDDB(post)
 }
 
 func (s *PostStore) DeletePost(id int) error {
-	// Delete a post by ID
-	return nil
+	return s.db.DeletePostByIDDB(id)
 }
 
 func (s *PostStore) GetUserByID(userID int) (*types.User, error) {

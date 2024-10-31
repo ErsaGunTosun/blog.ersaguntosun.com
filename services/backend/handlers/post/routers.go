@@ -3,6 +3,7 @@ package post
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"main.go/auth"
@@ -21,12 +22,11 @@ func NewHandler(s types.PostStore) *PostHandler {
 }
 
 func (h *PostHandler) RegisterRoutes(router *mux.Router) {
-
 	router.HandleFunc("/posts", h.PostsHandler).Methods("GET")
 	router.HandleFunc("/posts", h.CreatePostHandler).Methods("POST")
-	router.HandleFunc("/posts/{id}", utils.MakeHTTPHandleFunc(h.GetPostHandler)).Methods("GET")
-	router.HandleFunc("/posts/{id}", utils.MakeHTTPHandleFunc(h.UpdatePostHandler)).Methods("PUT")
-	router.HandleFunc("/posts/{id}", utils.MakeHTTPHandleFunc(h.DeletePostHandler)).Methods("DELETE")
+	router.HandleFunc("/posts/{id}", h.GetPostHandler).Methods("GET")
+	router.HandleFunc("/posts/{id}", h.UpdatePostHandler).Methods("PUT")
+	router.HandleFunc("/posts/{id}", h.DeletePostHandler).Methods("DELETE")
 
 }
 
@@ -42,7 +42,6 @@ func (h *PostHandler) PostsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *PostHandler) CreatePostHandler(w http.ResponseWriter, r *http.Request) {
-	// Check if user is authenticated
 	userID, err := auth.AuthUserJWT(w, r)
 
 	if err != nil {
@@ -59,7 +58,7 @@ func (h *PostHandler) CreatePostHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	// Create a new post
+	//
 	var payload types.CreatePostPayload
 
 	if err := utils.ParseJSON(r, &payload); err != nil {
@@ -82,17 +81,122 @@ func (h *PostHandler) CreatePostHandler(w http.ResponseWriter, r *http.Request) 
 
 }
 
-func (h *PostHandler) GetPostHandler(w http.ResponseWriter, r *http.Request) error {
-	// Get a post by ID
-	return nil
+func (h *PostHandler) GetPostHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, ok := vars["id"]
+
+	if !ok {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("missing post ID"))
+		return
+	}
+
+	postID, err := strconv.Atoi(id)
+	if err != nil {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid product ID"))
+		return
+	}
+
+	post, err := h.store.GetPostByID(postID)
+
+	if err != nil {
+		utils.WriteError(w, http.StatusNotFound, err)
+		return
+	}
+
+	utils.WriteJSON(w, http.StatusOK, post)
 }
 
-func (h *PostHandler) UpdatePostHandler(w http.ResponseWriter, r *http.Request) error {
-	// Update a post by ID
-	return nil
+func (h *PostHandler) UpdatePostHandler(w http.ResponseWriter, r *http.Request) {
+	userID, err := auth.AuthUserJWT(w, r)
+
+	if err != nil {
+		utils.WriteError(w, http.StatusUnauthorized, err)
+		utils.DeleteToken(w)
+		return
+	}
+
+	_, err = h.store.GetUserByID(userID)
+
+	if err != nil {
+		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
+		utils.DeleteToken(w)
+		return
+	}
+
+	//
+	vars := mux.Vars(r)
+	id, ok := vars["id"]
+
+	if !ok {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("missing post ID"))
+		return
+	}
+
+	postID, err := strconv.Atoi(id)
+	if err != nil {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid post ID"))
+		return
+	}
+
+	var payload types.UpdatePostPayload
+
+	if err := utils.ParseJSON(r, &payload); err != nil {
+		utils.WriteError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	err = h.store.UpdatePost(&types.Post{
+		ID:      postID,
+		Title:   payload.Title,
+		Content: payload.Content,
+	})
+	if err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	utils.WriteJSON(w, http.StatusCreated, nil)
+
 }
 
-func (h *PostHandler) DeletePostHandler(w http.ResponseWriter, r *http.Request) error {
-	// Delete a post by ID
-	return nil
+func (h *PostHandler) DeletePostHandler(w http.ResponseWriter, r *http.Request) {
+	userID, err := auth.AuthUserJWT(w, r)
+
+	if err != nil {
+		utils.WriteError(w, http.StatusUnauthorized, err)
+		utils.DeleteToken(w)
+		return
+	}
+
+	_, err = h.store.GetUserByID(userID)
+
+	if err != nil {
+		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
+		utils.DeleteToken(w)
+		return
+	}
+
+	//
+	vars := mux.Vars(r)
+	id, ok := vars["id"]
+
+	if !ok {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("missing post ID"))
+		return
+	}
+
+	postID, err := strconv.Atoi(id)
+	if err != nil {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid post ID"))
+		return
+	}
+
+	err = h.store.DeletePost(postID)
+
+	if err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	utils.WriteJSON(w, http.StatusOK, nil)
 }
