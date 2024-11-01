@@ -3,17 +3,24 @@ import React from 'react'
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
-import { CreatePost } from '@/utils/adminApi';
+import { DeletePost} from '@/utils/adminApi';
 import { GetPosts } from '@/utils/blogApi';
 
 function AdminPage() {
   const router = useRouter();
 
   const [posts, setPosts] = React.useState([])
+  const [deleteStatus, setDeleteStatus] = React.useState('')
   const getAllPosts = async () => {
     let postsReq = await GetPosts()
     setPosts(postsReq.data)
   }
+
+  const deletePost = async (id) => {
+    let status = await DeletePost(id, router)
+    setDeleteStatus(status)
+  }
+
 
   React.useEffect(() => {
     try {
@@ -47,12 +54,18 @@ function AdminPage() {
     catch (error) {
       console.log(error)
     }
-  }, [])
+  }, []) 
 
+  React.useEffect(() => {
+    if (deleteStatus === 'success') {
+      getAllPosts()
+    }
+  }, [deleteStatus])
 
   return (
     <div>
       <h1>Admin Page</h1>
+      <button onClick={() => router.push('/admin/create')}>Create Post</button>
       {
         posts.map((post) => {
           return (
@@ -61,7 +74,7 @@ function AdminPage() {
               <p>{post.content}</p>
               <div className='space-x-2'>
                 <button onClick={() => router.push(`/admin/edit/${post.id}`)}>Edit</button>
-                <button onClick={() => router.push(`/admin/delete/${post.id}`)}>Delete</button>
+                <button onClick={() => deletePost(post.id)}>Delete</button>
               </div>
             </div>
           )
