@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"main.go/database"
+	"main.go/handlers/category"
 	"main.go/handlers/comment"
 	"main.go/handlers/post"
 	"main.go/handlers/user"
@@ -38,6 +39,10 @@ func (a *APIServer) Run() error {
 
 	commentHandler := comment.NewHandler()
 	commentHandler.RegisterRoutes(subrouter)
+
+	categoryStore := category.NewStore(a.db)
+	categoryHandler := category.NewHandler(categoryStore)
+	categoryHandler.RegisterRoutes(subrouter)
 
 	log.Println("Server is running on", a.addr)
 

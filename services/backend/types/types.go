@@ -53,6 +53,21 @@ type PostStore interface {
 	GetUserByID(userID int) (*User, error)
 }
 
+type CategoryStore interface {
+	GetCategories() ([]*Category, error)
+	GetCategoryByID(id int) (*Category, error)
+	CreateCategory(category *Category) error
+	UpdateCategory(category *Category) error
+	DeleteCategory(id int) error
+
+	GetCategoriesByPostID(postID int) ([]*Category, error)
+	GetPostsByCategoryID(categoryID int) ([]*Post, error)
+	AddCategoryToPost(postID, categoryID int) error
+	RemoveCategoryFromPost(postID, categoryID int) error
+
+	GetUserByID(userID int) (*User, error)
+}
+
 // Payload
 type RegisterUserPayload struct {
 	Username string `json:"username"`
@@ -73,4 +88,12 @@ type CreatePostPayload struct {
 type UpdatePostPayload struct {
 	Title   string `json:"title"`
 	Content string `json:"content"`
+}
+
+type CreateCategoryPayload struct {
+	Name string `json:"name"`
+}
+
+type UpdateCategoryPayload struct {
+	Name string `json:"name"`
 }
