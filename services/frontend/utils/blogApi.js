@@ -13,3 +13,19 @@ export async function  GetPosts() {
         console.log(error)
     }
 }
+
+
+export async function  GetCategories() {
+    try {
+        let categories = await axios({
+            method: 'get',
+            url: `http://localhost:8080/api/categories`,
+            withCredentials: true,
+        })
+        
+        return categories
+    }
+    catch (error) {
+        console.log(error)
+    }
+}

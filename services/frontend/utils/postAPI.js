@@ -65,3 +65,6 @@ export async function UpdatePost(id,t,c){
         console.log(err)
     })
 }
+
+
+

@@ -2,7 +2,7 @@ function Post({post}) {
     return (
         <div className="post my-12 pb-10">
             <a href="posts/1234" className="post-title text-3xl font-bold hover:underline hover:underline-offset-8 hover:decoration-1 hover:decoration-dotted cursor-pointer">
-                Midjourney / Discord to Lightroom automation - step by step - for 2023
+                Midjourney / Discord to Lightroom automation - step by step - for 2023 {post.id}
             </a>
             <p>
                 2023-04-30 - Midjourney · Adobe · Python

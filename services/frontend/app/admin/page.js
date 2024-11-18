@@ -3,7 +3,8 @@ import React from 'react'
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
-import { DeletePost} from '@/utils/adminApi';
+import { CreateCategory } from '@/utils/categoryAPI';
+import { DeletePost} from '@/utils/postAPI';
 import { GetPosts } from '@/utils/blogApi';
 
 function AdminPage() {
