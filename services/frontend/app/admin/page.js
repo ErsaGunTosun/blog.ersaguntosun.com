@@ -1,10 +1,14 @@
 'use client';
-import React from 'react'
 import { useRouter } from 'next/navigation';
+import React from 'react'
 import axios from 'axios';
 
-import { CreateCategory } from '@/utils/categoryAPI';
-import { DeletePost} from '@/utils/postAPI';
+import Header from '@/components/Header';
+import Post from '@/components/Post';
+import Panel from '@/components/Panel';
+
+// API
+import { DeletePost } from '@/utils/postAPI';
 import { GetPosts } from '@/utils/blogApi';
 
 function AdminPage() {
@@ -12,6 +16,7 @@ function AdminPage() {
 
   const [posts, setPosts] = React.useState([])
   const [deleteStatus, setDeleteStatus] = React.useState('')
+
   const getAllPosts = async () => {
     let postsReq = await GetPosts()
     setPosts(postsReq.data)
@@ -37,7 +42,6 @@ function AdminPage() {
         },)
           .then((res) => {
             if (res.status === 200) {
-              console.log(res)
             }
           }).catch((err) => {
             if (err.response.status === 401) {
@@ -55,7 +59,7 @@ function AdminPage() {
     catch (error) {
       console.log(error)
     }
-  }, []) 
+  }, [])
 
   React.useEffect(() => {
     if (deleteStatus === 'success') {
@@ -64,23 +68,32 @@ function AdminPage() {
   }, [deleteStatus])
 
   return (
-    <div>
-      <h1>Admin Page</h1>
-      <button onClick={() => router.push('/admin/create')}>Create Post</button>
-      {
-        posts.map((post) => {
-          return (
-            <div key={post.id}>
-              <h2>{post.title} + {post.id}</h2>
-              <p>{post.content}</p>
-              <div className='space-x-2'>
-                <button onClick={() => router.push(`/admin/edit/${post.id}`)}>Edit</button>
-                <button onClick={() => deletePost(post.id)}>Delete</button>
-              </div>
-            </div>
-          )
-        })
-      }
+    <div className="h-full w-full">
+      <Header />
+      <Panel />
+      <div className="xl:px-88 lg:px-28 md:px-12 px-4">
+        <div className="w-full">
+          {
+            posts.map((post) => {
+              return (
+                <div key={post.id} className='post-border mb-10'>
+                  <Post post={post} border={false} />
+                  <button 
+                    onClick={() => deletePost(post.id)}
+                    type="button" className="text-red-700 hover:underline hover:underline-offset-2 hover:decoration-1 hover:decoration-dotted  font-bold rounded-lg text-sm px-3 py-2.5 text-center mb-2">
+                    Delete Post
+                  </button>
+                  <button onClick={() => router.push(`/admin/edit/${post.id}`)}
+                    type="button" className="text-blue-700 hover:underline hover:underline-offset-2 hover:decoration-1 hover:decoration-dotted font-bold rounded-lg text-sm px-3 py-2.5 text-center mb-2">
+                    Edit Post
+                  </button>
+                </div>
+              )
+            })
+          }
+        </div>
+      </div>
+
 
     </div>
   )

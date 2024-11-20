@@ -27,7 +27,7 @@ header{
     border-bottom: 1px solid #ddd !important;
 }
 
-.post{
+.post-border{
     border-bottom: 1px solid #ddd !important;
 }
 
@@ -60,4 +60,8 @@ header{
 
 .input-box{
   border: 1px solid #000;
+}
+
+.custom-border{
+  border-bottom: 1px solid #ddd;
 }

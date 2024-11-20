@@ -1,6 +1,6 @@
-function Post({post}) {
+function Post({post,border}) {
     return (
-        <div className="post my-12 pb-10">
+        <div className={border ? "post-border my-12 pb-10": "post my-2 pb-2" }>
             <a href="posts/1234" className="post-title text-3xl font-bold hover:underline hover:underline-offset-8 hover:decoration-1 hover:decoration-dotted cursor-pointer">
                 Midjourney / Discord to Lightroom automation - step by step - for 2023 {post.id}
             </a>
