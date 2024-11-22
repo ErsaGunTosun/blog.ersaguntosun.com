@@ -53,5 +53,5 @@ func (a *APIServer) Run() error {
 		AllowCredentials: true,
 	})
 	handler := c.Handler(router)
-	return http.ListenAndServe(a.addr, handler)
+	return http.ListenAndServe((":" + a.addr), handler)
 }

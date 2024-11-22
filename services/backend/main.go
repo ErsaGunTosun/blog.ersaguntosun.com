@@ -19,5 +19,8 @@ func main() {
 	}
 
 	server := api.NewAPIServer(config.Configs.ServerPort, postgresDB)
-	server.Run()
+	err = server.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
