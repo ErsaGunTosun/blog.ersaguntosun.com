@@ -10,6 +10,7 @@ function createPage() {
   const [isFieldVisible, setIsFieldVisible] = React.useState(true)
   const editorRef = React.useRef(null)
   const [mdStr, setMdStr] = React.useState(`# This is a H1  \n## This is a H2  \n###### This is a H6`)
+  const [introduction , setIntroduction] = React.useState('')
   const [title, setTitle] = React.useState('')
   const [category, setCategory] = React.useState([])
 
@@ -52,6 +53,14 @@ function createPage() {
 
               <div className="relative z-0 w-full mb-5 group text-black">
                 <CategoriesDropdown category={category} setCategory={setCategory} />
+              </div>
+
+              <div>
+                <label for="message" class="block mb-2 text-sm font-medium text-gray-500">Introduction</label>
+                <textarea id="message" rows="4" maxLength={500} value={introduction} onChange={(e) => setIntroduction(e.target.value)}
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 border border-gray-300  outline-none" placeholder="Write your here...">
+                </textarea>
+                <p className='text-xs text-gray-400 text-end'>{500-entry.length}</p>
               </div>
 
             </div>

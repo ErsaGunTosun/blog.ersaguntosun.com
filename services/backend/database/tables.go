@@ -20,6 +20,7 @@ func (p *PostgresDB) createPostsTable() error {
 		CREATE TABLE IF NOT EXISTS posts (
 			id SERIAL PRIMARY KEY,
 			title TEXT NOT NULL,
+			introduction TEXT NOT NULL,
 			content TEXT NOT NULL,
 			author_id INT NOT NULL,
 			created_at TIMESTAMP NOT NULL DEFAULT NOW(),
