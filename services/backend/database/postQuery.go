@@ -90,6 +90,7 @@ func scanRowsIntoPost(rows *sql.Rows) (*types.Post, error) {
 	err := rows.Scan(
 		&post.ID,
 		&post.Title,
+		&post.Introduction,
 		&post.Content,
 		&post.AuthorID,
 		&post.CreatedAt,

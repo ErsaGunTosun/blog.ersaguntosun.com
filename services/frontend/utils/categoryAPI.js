@@ -1,25 +1,20 @@
 import axios from 'axios';
-export async function CreateCategory(name) {
+
+export async function GetCategories(id){
     try{
-        let category = await axios({
-            method: 'post',
-            url: `http://localhost:8080/api/categories`,
-            withCredentials: true,
-            headers: {
+        let categories = await axios({
+            method:"get",
+            url:"http://localhost:8080/api/categories/posts/"+id,
+            withCredentials:true,
+            headers:{
                 'Content-Type': 'application/json',
                 'Authorization': `${localStorage.getItem('token')}`
-            },
-            data: {
-                name: name
             }
         })
-        .then((res) => {
-            console.log(res)
-        }).catch((err) => {
-            console.log(err)
-        })
+    
+        return categories;
     }
-    catch(error){
-        console.log(error)
+    catch(e){
+        console.log(e)
     }
 }

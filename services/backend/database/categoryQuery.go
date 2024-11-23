@@ -117,7 +117,7 @@ func (p *PostgresDB) GetCategoriesByPostIDDB(postID int) ([]*types.Category, err
 	query := `
 		SELECT c.id, c.name
 		FROM categories c
-		JOIN post_categories pc ON c.id = pc.category_id
+		JOIN post_category pc ON c.id = pc.category_id
 		WHERE pc.post_id = $1
 	`
 	rows, err := p.db.Query(query, postID)
@@ -145,7 +145,7 @@ func (p *PostgresDB) GetPostsByCategoryIDDB(categoryID int) ([]*types.Post, erro
 	query := `
 		SELECT p.id, p.title, p.content, p.author_id, p.created_at, p.updated_at
 		FROM posts p
-		JOIN post_categories pc ON p.id = pc.post_id
+		JOIN post_category pc ON p.id = pc.post_id
 		WHERE pc.category_id = $1
 	`
 	rows, err := p.db.Query(query, categoryID)

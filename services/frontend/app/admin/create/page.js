@@ -5,6 +5,7 @@ import MarkdownEditor from '@uiw/react-markdown-editor';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from "react-icons/md";
 
 import CategoriesDropdown from '@/components/CategoriesDropdown';
+import { CreatePost } from '@/utils/postAPI';
 
 function createPage() {
   const [isFieldVisible, setIsFieldVisible] = React.useState(true)
@@ -21,10 +22,12 @@ function createPage() {
   }
 
   const handlePublish = () => {
-    console.log('Publishing post')
-    console.log('Title:', title)
-    console.log('Category:', category)
-    console.log('Content:', mdStr)
+    try {
+      CreatePost(title, mdStr, category, introduction)
+    }
+    catch (e) {
+      console.log(e)
+    }
   }
   return (
     <div className='w-full h-full'>
@@ -60,7 +63,7 @@ function createPage() {
                 <textarea id="message" rows="4" maxLength={500} value={introduction} onChange={(e) => setIntroduction(e.target.value)}
                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 border border-gray-300  outline-none" placeholder="Write your here...">
                 </textarea>
-                <p className='text-xs text-gray-400 text-end'>{500-entry.length}</p>
+                <p className='text-xs text-gray-400 text-end'>{500-introduction.length}</p>
               </div>
 
             </div>

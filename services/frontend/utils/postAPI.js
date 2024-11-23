@@ -1,5 +1,5 @@
 import axios from "axios";
-export async function CreatePost(){
+export async function CreatePost(title, content, category, introduction) {
     let posts = await axios({
         method: 'post',
         url: `http://localhost:8080/api/posts`,
@@ -9,8 +9,10 @@ export async function CreatePost(){
             'Authorization': `${localStorage.getItem('token')}`
           },
         data: {
-            title: "title",
-            content: "content",
+            title: title,
+            introduction: introduction,
+            content:  content,
+            categories: category
         }
     },)
         .then((res) => {

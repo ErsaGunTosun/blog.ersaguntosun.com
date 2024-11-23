@@ -25,7 +25,7 @@ func (h *CategoryHandler) RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/categories", h.CategoriesHandler).Methods("GET")
 	router.HandleFunc("/categories", h.CreateCategoryHandler).Methods("POST")
 	router.HandleFunc("/categories/{id}", h.GetCategoryHandler).Methods("GET")
-	router.HandleFunc("/categories/{posID}", h.GetCategoryByPostIDHandler).Methods("Get")
+	router.HandleFunc("/categories/posts/{postID}", h.GetCategoryByPostIDHandler).Methods("GET")
 	router.HandleFunc("/categories/{id}", h.UpdateCategoryHandler).Methods("PUT")
 	router.HandleFunc("/categories/{id}", h.DeleteCategoryHandler).Methods("DELETE")
 }
