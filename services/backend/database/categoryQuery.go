@@ -1,14 +1,21 @@
 package database
 
-import "main.go/types"
+import (
+	"database/sql"
+	"fmt"
+	"strings"
 
-func (p *PostgresDB) CreateCategoryDB(c *types.Category) error {
-	query := "INSERT INTO categories (name) VALUES ($1)"
-	_, err := p.db.Exec(query, c.Name)
+	"main.go/types"
+)
+
+func (p *PostgresDB) CreateCategoryDB(c *types.Category) (int, error) {
+	var newID int
+	query := "INSERT INTO categories (name) VALUES ($1) RETURNING id;"
+	err := p.db.QueryRow(query, strings.ToLower(c.Name)).Scan(&newID)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+	return newID, nil
 }
 
 func (p *PostgresDB) GetCategoriesDB() ([]*types.Category, error) {
@@ -31,6 +38,41 @@ func (p *PostgresDB) GetCategoriesDB() ([]*types.Category, error) {
 	}
 
 	return categories, nil
+}
+
+func (p *PostgresDB) GetCategoryByNameDB(name string) (*types.Category, error) {
+	rows, err := p.db.Query("SELECT * FROM categories WHERE name = $1", strings.ToLower(name))
+
+	if err != nil {
+		return nil, err
+	}
+
+	c := new(types.Category)
+
+	for rows.Next() {
+		c, err = scanRowsIntoCategory(rows)
+		fmt.Println("Category: ", c)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return c, nil
+}
+
+func scanRowsIntoCategory(rows *sql.Rows) (*types.Category, error) {
+	category := new(types.Category)
+
+	err := rows.Scan(
+		&category.ID,
+		&category.Name,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return category, nil
 }
 
 func (p *PostgresDB) GetCategoryByIDDB(id int) (*types.Category, error) {
@@ -132,7 +174,7 @@ func (p *PostgresDB) GetPostsByCategoryIDDB(categoryID int) ([]*types.Post, erro
 }
 
 func (p *PostgresDB) AddCategoryToPostDB(postID, categoryID int) error {
-	query := "INSERT INTO post_categories (post_id, category_id) VALUES ($1, $2)"
+	query := "INSERT INTO post_category (post_id, category_id) VALUES ($1, $2)"
 	_, err := p.db.Exec(query, postID, categoryID)
 	if err != nil {
 		return err
@@ -141,7 +183,7 @@ func (p *PostgresDB) AddCategoryToPostDB(postID, categoryID int) error {
 }
 
 func (p *PostgresDB) RemoveCategoryFromPostDB(postID, categoryID int) error {
-	query := "DELETE FROM post_categories WHERE post_id = $1 AND category_id = $2"
+	query := "DELETE FROM post_category WHERE post_id = $1 AND category_id = $2"
 	_, err := p.db.Exec(query, postID, categoryID)
 	if err != nil {
 		return err

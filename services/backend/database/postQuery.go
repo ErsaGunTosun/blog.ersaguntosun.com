@@ -7,13 +7,21 @@ import (
 	"main.go/types"
 )
 
-func (p *PostgresDB) CreatePostDB(i *types.Post) error {
-	query := "INSERT INTO posts (title, content, author_id) VALUES ($1, $2, $3)"
-	_, err := p.db.Exec(query, i.Title, i.Content, i.AuthorID)
+func (p *PostgresDB) CreatePostDB(i *types.Post) (int, error) {
+	var newID int
+
+	query := `
+			INSERT INTO posts (title,introduction,content, author_id) 
+			VALUES ($1,$2, $3,$4) 
+			RETURNING id;
+			`
+	err := p.db.QueryRow(query, i.Title, i.Introduction, i.Content, i.AuthorID).Scan(&newID)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+
+	return newID, nil
+
 }
 
 func (p *PostgresDB) GetPostsDB() ([]*types.Post, error) {

@@ -65,7 +65,7 @@ func (h *CategoryHandler) CreateCategoryHandler(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	err = h.store.CreateCategory(&types.Category{
+	_, err = h.store.CreateCategory(&types.Category{
 		Name: payload.Name,
 	})
 

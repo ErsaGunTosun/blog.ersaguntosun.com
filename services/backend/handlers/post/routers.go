@@ -66,15 +66,42 @@ func (h *PostHandler) CreatePostHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	err = h.store.CreatePost(&types.Post{
-		Title:    payload.Title,
-		Content:  payload.Content,
-		AuthorID: userID,
+	postID, err := h.store.CreatePost(&types.Post{
+		Title:        payload.Title,
+		Introduction: payload.Introduction,
+		Content:      payload.Content,
+		AuthorID:     userID,
 	})
 
 	if err != nil {
 		utils.WriteError(w, http.StatusInternalServerError, err)
 		return
+	}
+
+	// categories
+	for _, categoryName := range payload.Categories {
+		category, err := h.store.GetCategoryByName(categoryName)
+		if err != nil {
+			utils.WriteJSON(w, http.StatusInternalServerError, err)
+		}
+		if category.ID == 0 {
+			categoryID, err := h.store.CreateCategory(&types.Category{
+				Name: categoryName,
+			})
+			if err != nil {
+				utils.WriteError(w, http.StatusInternalServerError, err)
+			}
+
+			err = h.store.AddCategoryToPost(postID, categoryID)
+			if err != nil {
+				utils.WriteError(w, http.StatusInternalServerError, err)
+			}
+		} else {
+			err = h.store.AddCategoryToPost(postID, category.ID)
+			if err != nil {
+				utils.WriteError(w, http.StatusInternalServerError, err)
+			}
+		}
 	}
 
 	utils.WriteJSON(w, http.StatusCreated, nil)
@@ -156,7 +183,6 @@ func (h *PostHandler) UpdatePostHandler(w http.ResponseWriter, r *http.Request) 
 	}
 
 	utils.WriteJSON(w, http.StatusCreated, nil)
-
 }
 
 func (h *PostHandler) DeletePostHandler(w http.ResponseWriter, r *http.Request) {

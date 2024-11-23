@@ -17,11 +17,15 @@ func (s *CategoryStore) GetCategories() ([]*types.Category, error) {
 	return s.db.GetCategoriesDB()
 }
 
+func (s *CategoryStore) GetCategoryByName(name string) (*types.Category, error) {
+	return s.db.GetCategoryByNameDB(name)
+}
+
 func (s *CategoryStore) GetCategoryByID(id int) (*types.Category, error) {
 	return s.db.GetCategoryByIDDB(id)
 }
 
-func (s *CategoryStore) CreateCategory(category *types.Category) error {
+func (s *CategoryStore) CreateCategory(category *types.Category) (int, error) {
 	return s.db.CreateCategoryDB(category)
 }
 

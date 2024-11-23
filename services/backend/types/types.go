@@ -11,12 +11,13 @@ type User struct {
 }
 
 type Post struct {
-	ID        int       `json:"id"`
-	Title     string    `json:"title"`
-	Content   string    `json:"content"`
-	AuthorID  int       `json:"author_id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID           int       `json:"id"`
+	Title        string    `json:"title"`
+	Introduction string    `json:"introduction"`
+	Content      string    `json:"content"`
+	AuthorID     int       `json:"author_id"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
 }
 
 type Comment struct {
@@ -45,18 +46,24 @@ type UserStore interface {
 type PostStore interface {
 	GetPosts() ([]*Post, error)
 	GetPostByID(id int) (*Post, error)
-	CreatePost(post *Post) error
+	CreatePost(post *Post) (int, error)
 	UpdatePost(post *Post) error
 	DeletePost(id int) error
 
 	// user
 	GetUserByID(userID int) (*User, error)
+
+	// category
+	CreateCategory(category *Category) (int, error)
+	GetCategoryByName(name string) (*Category, error)
+	AddCategoryToPost(postID, categoryID int) error
 }
 
 type CategoryStore interface {
 	GetCategories() ([]*Category, error)
+	GetCategoryByName(name string) (*Category, error)
 	GetCategoryByID(id int) (*Category, error)
-	CreateCategory(category *Category) error
+	CreateCategory(category *Category) (int, error)
 	UpdateCategory(category *Category) error
 	DeleteCategory(id int) error
 
@@ -81,8 +88,10 @@ type LoginUserPayload struct {
 }
 
 type CreatePostPayload struct {
-	Title   string `json:"title"`
-	Content string `json:"content"`
+	Title        string   `json:"title"`
+	Introduction string   `json:"introduction"`
+	Categories   []string `json:"categories"`
+	Content      string   `json:"content"`
 }
 
 type UpdatePostPayload struct {
