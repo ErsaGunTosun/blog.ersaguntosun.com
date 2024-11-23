@@ -29,3 +29,17 @@ export async function  GetCategories() {
         console.log(error)
     }
 }
+
+export async function GetPost(id){
+    try{
+        let post = await axios({
+            method:"get",
+            url:`http://localhost:8080/api/posts/${id}`,
+            withCredentials:true
+        })
+        return post
+    }
+    catch(error){
+        console.log(error)
+    }
+}

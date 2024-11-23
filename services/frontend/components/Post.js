@@ -32,7 +32,7 @@ function Post({ post, border }) {
     return (
         <div className={border ? "post-border my-12 pb-10" : "post my-2 pb-2"}>
 
-            <a href="posts/1234" className="post-title text-3xl font-bold hover:underline hover:underline-offset-8 hover:decoration-1 hover:decoration-dotted cursor-pointer">
+            <a href={"posts/"+post.id} className="post-title text-3xl font-bold hover:underline hover:underline-offset-8 hover:decoration-1 hover:decoration-dotted cursor-pointer">
                 {post.title}
             </a>
             <p className="text-black">
