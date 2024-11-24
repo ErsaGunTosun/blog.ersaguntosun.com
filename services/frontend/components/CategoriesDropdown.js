@@ -1,29 +1,40 @@
 'use client';
-import { useState, useRef } from "react";
+import { useState, useRef, use, useEffect } from "react";
 
-const CategoriesDropdown = ({category, setCategory}) => {
+import { GetCategories } from "@/utils/blogApi";
+
+const CategoriesDropdown = ({ category, setCategory }) => {
     const [inputValue, setInputValue] = useState("");
-    const [selectedOptions, setSelectedOptions] = useState([]);
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [filteredOptions, setFilteredOptions] = useState([]);
-    const [options, setOptions] = useState(["One", "Two", "Three", "Four", "Five"]);
+    const [options, setOptions] = useState([]);
     const dropdownRef = useRef(null);
 
-
+    const getAllCategories = async () => {
+        try {
+            let categories = await GetCategories()
+            categories.data.map((category) => {
+                setOptions((prev) => [...prev, category.name]);
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const handleInputChange = (e) => {
         const query = e.target.value.toLowerCase();
         setInputValue(e.target.value);
 
         if (query) {
-            const filtered = options.filter(
-                (option) =>
-                    option.toLowerCase().includes(query) &&
-                    !category.includes(option)
-            );
-            setFilteredOptions(filtered);
-            setIsDropdownVisible(true);
-           
+            if(!category.includes(query)){
+                const filtered = options.filter(
+                    (option) =>
+                        option.toLowerCase().includes(query) &&
+                        !category.includes(option)
+                );
+                setFilteredOptions(filtered);
+                setIsDropdownVisible(true);
+            }
         } else {
             setFilteredOptions([]);
             setIsDropdownVisible(false);
@@ -47,12 +58,12 @@ const CategoriesDropdown = ({category, setCategory}) => {
 
     const handleAddNewOption = () => {
         if (inputValue && !options.includes(inputValue)) {
-          setOptions((prev) => [...prev, inputValue]); 
-          setCategory((prev) => [...prev, inputValue]); 
-          setInputValue("");
-          setIsDropdownVisible(false); 
+            setOptions((prev) => [...prev, inputValue]);
+            setCategory((prev) => [...prev, inputValue]);
+            setInputValue("");
+            setIsDropdownVisible(false);
         }
-      };
+    };
 
     const handleClickOutside = (e) => {
         if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -60,16 +71,23 @@ const CategoriesDropdown = ({category, setCategory}) => {
         }
     };
 
-    useState(() => {
-        window.document.addEventListener("mousedown", handleClickOutside);
-        return () => window.document.removeEventListener("mousedown", handleClickOutside);
+    useEffect(() => {
+        try {
+            getAllCategories();
+            window.document.addEventListener("mousedown", handleClickOutside);
+            return () => window.document.removeEventListener("mousedown", handleClickOutside);
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
+
+
 
     return (
         <div className="relative w-full custom-border" ref={dropdownRef}>
             <div className="flex items-center flex-wrap gap-2 border border-gray-500 rounded-md py-2.5 bg-transparent">
 
-                {category.map((option, index) => (
+                {category?.map((option, index) => (
                     <span
                         key={index}
                         className="flex items-center px-3 py-1 text-sm text-gray-800 bg-gray-100 rounded"
@@ -90,7 +108,7 @@ const CategoriesDropdown = ({category, setCategory}) => {
                         type="text"
                         value={inputValue}
                         onChange={handleInputChange}
-                        onFocus={() => {if(inputValue.length > 0) setIsDropdownVisible(true)}}
+                        onFocus={() => { if (inputValue.length > 0) setIsDropdownVisible(true) }}
                         id="floating_category"
                         name="floating_category"
                         placeholder=""
@@ -105,22 +123,22 @@ const CategoriesDropdown = ({category, setCategory}) => {
                 <ul
                     className="absolute z-10 mt-1 w-full bg-white text-black border border-gray-400  shadow-lg max-h-60 overflow-auto"
                 >
-                    {filteredOptions.length >0 ? filteredOptions.map((option, index) => (
+                    {filteredOptions.length > 0 ? filteredOptions.map((option, index) => (
                         <li
                             key={index}
                             onClick={() => handleOptionClick(option)}
                             className="cursor-pointer hover:bg-gray-200 px-3 py-2"
                         >
                             {option}
-                        </li>)) 
-                        : 
+                        </li>))
+                        :
                         (<li
                             onClick={handleAddNewOption}
                             className="cursor-pointer hover:bg-gray-200 px-3 py-2"
                         >
                             Add "{inputValue}" to the list
                         </li>
-                    )}
+                        )}
                 </ul>
             )}
         </div>

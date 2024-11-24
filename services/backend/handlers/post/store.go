@@ -25,7 +25,7 @@ func (s *PostStore) CreatePost(post *types.Post) (int, error) {
 	return s.db.CreatePostDB(post)
 }
 
-func (s *PostStore) UpdatePost(post *types.Post) error {
+func (s *PostStore) UpdatePost(post *types.Post) (int, error) {
 	return s.db.UpdatePostByIDDB(post)
 }
 
@@ -42,10 +42,18 @@ func (s *PostStore) CreateCategory(category *types.Category) (int, error) {
 	return s.db.CreateCategoryDB(category)
 }
 
+func (s *PostStore) GetCategoriesByPostID(postID int) ([]*types.Category, error) {
+	return s.db.GetCategoriesByPostIDDB(postID)
+}
+
 func (s *PostStore) GetCategoryByName(name string) (*types.Category, error) {
 	return s.db.GetCategoryByNameDB(name)
 }
 
 func (s *PostStore) AddCategoryToPost(postID, categoryID int) error {
 	return s.db.AddCategoryToPostDB(postID, categoryID)
+}
+
+func (s *PostStore) RemoveCategoryFromPost(postID, categoryID int) error {
+	return s.db.RemoveCategoryFromPostDB(postID, categoryID)
 }

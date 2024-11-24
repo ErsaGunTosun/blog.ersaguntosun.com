@@ -66,13 +66,18 @@ func (p *PostgresDB) GetPostByIDDB(id int) (*types.Post, error) {
 
 }
 
-func (p *PostgresDB) UpdatePostByIDDB(i *types.Post) error {
-	query := "UPDATE posts SET title = $1, content = $2 WHERE id = $3"
-	_, err := p.db.Query(query, i.Title, i.Content, i.ID)
+func (p *PostgresDB) UpdatePostByIDDB(i *types.Post) (int, error) {
+	var newID int
+	query := `
+		UPDATE posts SET title = $1, content = $2, introduction=$3 WHERE id = $4 
+		RETURNING id;`
+	err := p.db.QueryRow(query, i.Title, i.Content, i.Introduction, i.ID).Scan(&newID)
+
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+
+	return newID, nil
 }
 
 func (p *PostgresDB) DeletePostByIDDB(id int) error {

@@ -48,7 +48,7 @@ export async function DeletePost(id, router){
     return status;
 }
 
-export async function UpdatePost(id,t,c){
+export async function UpdatePost(title, content, category, introduction,id){
     await axios({
         method:"put",
         url:`http://localhost:8080/api/posts/${id}`,
@@ -57,9 +57,11 @@ export async function UpdatePost(id,t,c){
             'Content-Type': 'application/json',
             'Authorization': `${localStorage.getItem('token')}`
         },
-        data:{
-            title:t,
-            content:c
+        data: {
+            title: title,
+            introduction: introduction,
+            content:  content,
+            categories: category
         }
     }).then((res)=>{
         console.log(res)

@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
 	"strings"
 
 	"main.go/types"
@@ -51,7 +50,6 @@ func (p *PostgresDB) GetCategoryByNameDB(name string) (*types.Category, error) {
 
 	for rows.Next() {
 		c, err = scanRowsIntoCategory(rows)
-		fmt.Println("Category: ", c)
 		if err != nil {
 			return nil, err
 		}

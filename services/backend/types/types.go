@@ -47,7 +47,7 @@ type PostStore interface {
 	GetPosts() ([]*Post, error)
 	GetPostByID(id int) (*Post, error)
 	CreatePost(post *Post) (int, error)
-	UpdatePost(post *Post) error
+	UpdatePost(post *Post) (int, error)
 	DeletePost(id int) error
 
 	// user
@@ -55,8 +55,10 @@ type PostStore interface {
 
 	// category
 	CreateCategory(category *Category) (int, error)
+	GetCategoriesByPostID(postID int) ([]*Category, error)
 	GetCategoryByName(name string) (*Category, error)
 	AddCategoryToPost(postID, categoryID int) error
+	RemoveCategoryFromPost(postID, categoryID int) error
 }
 
 type CategoryStore interface {
@@ -95,8 +97,10 @@ type CreatePostPayload struct {
 }
 
 type UpdatePostPayload struct {
-	Title   string `json:"title"`
-	Content string `json:"content"`
+	Title        string   `json:"title"`
+	Introduction string   `json:"introduction"`
+	Categories   []string `json:"categories"`
+	Content      string   `json:"content"`
 }
 
 type CreateCategoryPayload struct {
