@@ -7,7 +7,7 @@ import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from "react-icon
 import CategoriesDropdown from '@/components/CategoriesDropdown';
 
 //API
-import { GetPost,GetCategoriesWithID } from '@/utils/';
+import { GetPost,GetCategoriesWithID } from '@/utils/blogAPIFunc';
 import { UpdatePost } from '@/utils/adminAPIFUnc';
 
 
