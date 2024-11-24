@@ -25,7 +25,7 @@ func (p *PostgresDB) createPostsTable() error {
 			author_id INT NOT NULL,
 			created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 			updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
-			FOREIGN KEY (author_id) REFERENCES users (id)
+			FOREIGN KEY (author_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 		);
 	`
 	_, err := p.db.Exec(query)
@@ -38,8 +38,8 @@ func (p *PostgresDB) createPostCategoryTable() error {
 		CREATE TABLE IF NOT EXISTS post_category (
 			post_id INT NOT NULL,
 			category_id INT NOT NULL,
-			FOREIGN KEY (post_id) REFERENCES posts (id),
-			FOREIGN KEY (category_id) REFERENCES categories (id)
+			FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE ON UPDATE CASCADE,
+			FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE ON UPDATE CASCADE
 		);
 	`
 	_, err := p.db.Exec(query)
@@ -68,8 +68,8 @@ func (p *PostgresDB) createCommentsTable() error {
 			post_id INT NOT NULL,
 			created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 			updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
-			FOREIGN KEY (author_id) REFERENCES users (id),
-			FOREIGN KEY (post_id) REFERENCES posts (id)
+			FOREIGN KEY (author_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+			FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE ON UPDATE CASCADE
 		);
 	`
 	_, err := p.db.Exec(query)
