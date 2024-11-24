@@ -1,4 +1,5 @@
 import Search from "./Search"
+
 function Header() {
   return (
     <header className="h-16 xl:px-88 lg:px-28 md:px-12 px-4">

@@ -7,8 +7,8 @@ import Content from "@/components/Content"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 
-import { GetCategories } from "@/utils/categoryAPI"
-import { GetPost } from "@/utils/blogApi"
+//API
+import { GetPost,GetCategoriesWithID } from "@/utils/blogAPIFunc"
 
 
 export default function Posts({ params }) {
@@ -24,7 +24,7 @@ export default function Posts({ params }) {
   }
 
   const getCategories = async () => {
-    let categories = await GetCategories(params.id)
+    let categories = await GetCategoriesWithID(params.id)
     return setCategories(categories.data)
   }
 

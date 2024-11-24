@@ -25,7 +25,7 @@ export async function CreatePost(title, content, category, introduction) {
 
 }
 
-export async function DeletePost(id, router){
+export async function DeletePost(id){
     let status = "error";
     await axios({
         method:"delete",
@@ -69,6 +69,4 @@ export async function UpdatePost(title, content, category, introduction,id){
         console.log(err)
     })
 }
-
-
 

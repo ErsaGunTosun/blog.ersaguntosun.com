@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 
-import { GetCategories } from "@/utils/blogApi"
+import { GetCategories } from "@/utils/blogAPIFunc"
 
 function Categories() {
     const [categories, setCategories] = React.useState([])
@@ -34,43 +34,6 @@ function Categories() {
                             )
                         })
                     }
-                    {/* <li className="cursor-pointer">
-                        Arduino(11)
-                    </li>
-                    <li className="cursor-pointer">
-                        Commandline (12)
-                    </li>
-                    <li className="cursor-pointer">
-                        Crawling (12)
-                    </li>
-                    <li className="cursor-pointer" >
-                        Arduino(11)
-                    </li>
-                    <li className="cursor-pointer" >
-                        Commandline (12)
-                    </li>
-                    <li className="cursor-pointer" >
-                        Crawling (12)
-                    </li>
-                    <li className="cursor-pointer" >
-                        Arduino(11)
-                    </li>
-                    <li className="cursor-pointer">
-                        Commandline (12)
-                    </li>
-                    <li className="cursor-pointer">
-                        Crawling (12)
-                    </li>
-                    <li className="cursor-pointer" >
-                        Arduino(11)
-                    </li>
-                    <li className="cursor-pointer" >
-                        Commandline (12)
-                    </li>
-                    <li className="cursor-pointer" >
-                        Crawling (12)
-                    </li> */}
-
                 </ul>
             </div>
         </div>

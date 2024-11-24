@@ -1,7 +1,7 @@
 'use client';
 import React from "react"
 
-import { GetCategories } from "@/utils/categoryAPI"
+import { GetCategoriesWithID } from "@/utils/blogAPIFunc"
 
 function Post({ post, border }) {
     const [categories, setCategories] = React.useState([])
@@ -9,7 +9,7 @@ function Post({ post, border }) {
 
     const getAllCategories = async () => {
         try {
-            let response = await GetCategories(post.id)
+            let response = await GetCategoriesWithID(post.id)
             setCategories(response.data)
         } catch (e) {
             console.log(e)

@@ -5,9 +5,10 @@ import MarkdownEditor from '@uiw/react-markdown-editor';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from "react-icons/md";
 
 import CategoriesDropdown from '@/components/CategoriesDropdown';
-import { GetPost } from '@/utils/blogApi';
-import { GetCategories } from '@/utils/categoryAPI';
-import { UpdatePost } from '@/utils/postAPI';
+
+//API
+import { GetPost,GetCategoriesWithID } from '@/utils/';
+import { UpdatePost } from '@/utils/adminAPIFUnc';
 
 
 function editpage({params}) {
@@ -35,7 +36,7 @@ function editpage({params}) {
 
   const getCategories = async () => {
     try{
-      let categories = await GetCategories(params.id)
+      let categories = await GetCategoriesWithID(params.id)
     return setCategories(categories.data)
     }
     catch (e) {

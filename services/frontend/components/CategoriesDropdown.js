@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, use, useEffect } from "react";
 
-import { GetCategories } from "@/utils/blogApi";
+import { GetCategories } from "@/utils/blogAPIFunc";
 
 const CategoriesDropdown = ({ category, setCategory }) => {
     const [inputValue, setInputValue] = useState("");

@@ -3,7 +3,7 @@ import React from 'react'
 import Post from '@/components/Post'
 
 
-import { GetPosts } from '@/utils/blogApi';
+import { GetPosts } from '@/utils/blogAPIFunc';
 
 
 function Posts() {
