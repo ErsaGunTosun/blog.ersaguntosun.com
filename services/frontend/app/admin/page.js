@@ -8,7 +8,7 @@ import Post from '@/components/Post';
 import Panel from '@/components/Panel';
 
 // API
-import { DeletePost } from '@/utils/adminAPIFUnc';
+import { DeletePost } from '@/utils/adminAPIFunc';
 import { GetPosts } from '@/utils/blogAPIFunc';
 
 function AdminPage() {

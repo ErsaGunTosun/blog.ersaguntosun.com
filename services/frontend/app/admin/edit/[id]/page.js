@@ -8,7 +8,7 @@ import CategoriesDropdown from '@/components/CategoriesDropdown';
 
 //API
 import { GetPost,GetCategoriesWithID } from '@/utils/blogAPIFunc';
-import { UpdatePost } from '@/utils/adminAPIFUnc';
+import { UpdatePost } from '@/utils/adminAPIFunc';
 
 
 function editpage({params}) {

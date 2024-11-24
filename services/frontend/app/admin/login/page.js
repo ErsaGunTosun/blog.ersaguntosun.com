@@ -18,7 +18,12 @@ function LoginPage() {
             method: 'get',
             url: `http://localhost:8080/api/auth/verify`,
             withCredentials: true,
-          },)
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': `${localStorage.getItem('token')}`
+            }
+          },
+        )
             .then((res) => {
               if(res.status === 200){
                 router.push('/admin')
