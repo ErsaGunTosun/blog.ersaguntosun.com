@@ -1,4 +1,32 @@
 import axios from "axios";
+
+// User
+export async function Logout(router) {
+    try {
+        await axios({
+            method: 'get',
+            url: `http://localhost:8080/api/auth/logout`,
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${localStorage.getItem('token')}`
+            }
+        }).then((res) => {
+            console.log(res)
+            localStorage.removeItem('token')
+            router.refresh()
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
+
+
+// Post
 export async function CreatePost(title, content, category, introduction) {
     let posts = await axios({
         method: 'post',
@@ -7,11 +35,11 @@ export async function CreatePost(title, content, category, introduction) {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `${localStorage.getItem('token')}`
-          },
+        },
         data: {
             title: title,
             introduction: introduction,
-            content:  content,
+            content: content,
             categories: category
         }
     },)
@@ -25,47 +53,47 @@ export async function CreatePost(title, content, category, introduction) {
 
 }
 
-export async function DeletePost(id){
+export async function DeletePost(id) {
     let status = "error";
     await axios({
-        method:"delete",
-        url:`http://localhost:8080/api/posts/${id}`,
-        withCredentials:true,
-        headers:{
+        method: "delete",
+        url: `http://localhost:8080/api/posts/${id}`,
+        withCredentials: true,
+        headers: {
             'Content-Type': 'application/json',
             'Authorization': `${localStorage.getItem('token')}`
         }
-    }).then((res)=>{
+    }).then((res) => {
         console.log(res)
-        if(res.status == 200){
+        if (res.status == 200) {
             status = "success";
         }
     }
-    ).catch((err)=>{
+    ).catch((err) => {
         console.log(err)
     })
-    
+
     return status;
 }
 
-export async function UpdatePost(title, content, category, introduction,id){
+export async function UpdatePost(title, content, category, introduction, id) {
     await axios({
-        method:"put",
-        url:`http://localhost:8080/api/posts/${id}`,
-        withCredentials:true,
-        headers:{
+        method: "put",
+        url: `http://localhost:8080/api/posts/${id}`,
+        withCredentials: true,
+        headers: {
             'Content-Type': 'application/json',
             'Authorization': `${localStorage.getItem('token')}`
         },
         data: {
             title: title,
             introduction: introduction,
-            content:  content,
+            content: content,
             categories: category
         }
-    }).then((res)=>{
+    }).then((res) => {
         console.log(res)
-    }).catch((err)=>{
+    }).catch((err) => {
         console.log(err)
     })
 }

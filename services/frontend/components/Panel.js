@@ -1,8 +1,11 @@
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
+import { Logout } from '../utils/adminAPIFUnc'
+
 function Panel() {
     const router = useRouter()
+    
     return (
         <div className="hidden xl:flex xl:fixed w-3/12 h-full items-start pt-40 justify-end px-20">
             <div className="h-52 w-full text-end text-sm">
@@ -17,7 +20,7 @@ function Panel() {
                     <li className="cursor-pointer underline decoration-dotted underline-offset-4">
                         Settings
                     </li>
-                    <li className="cursor-pointer text-red-600 underline decoration-dotted underline-offset-4">
+                    <li onClick={()=>Logout(router)} className="cursor-pointer text-red-600 underline decoration-dotted underline-offset-4">
                         Logout
                     </li>
                 </ul>

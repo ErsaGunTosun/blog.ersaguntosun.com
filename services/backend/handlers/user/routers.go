@@ -28,6 +28,7 @@ func (h *UserHandler) RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/auth/login", h.loginHandler).Methods(http.MethodPost)
 	router.HandleFunc("/auth/register", h.registerHandler).Methods(http.MethodPost)
 	router.HandleFunc("/auth/verify", h.verifyHandler).Methods(http.MethodGet)
+	router.HandleFunc("/auth/logout", h.logoutHandler).Methods(http.MethodGet)
 }
 
 func (h *UserHandler) loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -154,4 +155,8 @@ func (h *UserHandler) verifyHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.WriteJSON(w, http.StatusOK, nil)
+}
+
+func (h *UserHandler) logoutHandler(w http.ResponseWriter, r *http.Request) {
+	utils.DeleteToken(w)
 }
