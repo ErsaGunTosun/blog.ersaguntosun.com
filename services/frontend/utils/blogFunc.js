@@ -29,6 +29,21 @@ export async function GetPost(id){
     }
 }
 
+export async function GetPostsWithID (id) {
+    try{
+        let posts = await axios({
+            method: 'get',
+            url: `http://localhost:8080/api/categories/`+id,
+            withCredentials: true,
+        })
+        
+        return posts
+    }
+    catch(err){
+        console.log(err)
+    }    
+}
+
 // Category 
 
 export async function  GetCategories() {
@@ -64,3 +79,4 @@ export async function GetCategoriesWithID(id){
         console.log(e)
     }
 }
+

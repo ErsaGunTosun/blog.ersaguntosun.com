@@ -93,14 +93,14 @@ func (h *CategoryHandler) GetCategoryHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	category, err := h.store.GetCategoryByID(categoryID)
+	posts, err := h.store.GetPostsByCategoryID(categoryID)
 
 	if err != nil {
 		utils.WriteError(w, http.StatusInternalServerError, err)
 		return
 	}
 
-	utils.WriteJSON(w, http.StatusOK, category)
+	utils.WriteJSON(w, http.StatusOK, posts)
 }
 
 func (h *CategoryHandler) GetCategoryByPostIDHandler(w http.ResponseWriter, r *http.Request) {

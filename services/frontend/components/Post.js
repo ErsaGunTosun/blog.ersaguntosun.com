@@ -1,7 +1,7 @@
 'use client';
 import React from "react"
 
-import { GetCategoriesWithID } from "@/utils/blogAPIFunc"
+import { GetCategoriesWithID } from "@/utils/blogFunc"
 
 function Post({ post, border }) {
     const [categories, setCategories] = React.useState([])

@@ -3,19 +3,27 @@ import React from 'react'
 import Post from '@/components/Post'
 
 
-import { GetPosts } from '@/utils/blogAPIFunc';
+import { GetPosts, GetPostsWithID } from '@/utils/blogFunc';
 
-
-function Posts() {
+function Posts({ isPosts, id = 0 }) {
     const [posts, setPosts] = React.useState([])
     const getAllPosts = async () => {
         let postsReq = await GetPosts()
         setPosts(postsReq.data)
     }
+    const getPostsWithID = async () => {
+        let postsReq = await GetPostsWithID(id)
+        setPosts(postsReq.data)
+    }
 
     React.useEffect(() => {
         try {
-            getAllPosts()
+            if (isPosts) {
+                getAllPosts()
+            }
+            else {
+                getPostsWithID()
+            }
         }
         catch (err) {
             console.log(err)
@@ -25,12 +33,19 @@ function Posts() {
     React.useEffect(() => {
         console.log(posts)
     }, [posts])
+
     return (
         <div>
             {
-              posts.map((item)=>{
-                return <Post post={item} key={item.id} border={true} />
-              })
+                posts.length == 0 &&
+                <div className='text-center my-10'>
+                    <p className='text-3xl'>No Posts Found</p>
+                </div>
+            }
+            {
+                posts.map((item) => {
+                    return <Post post={item} key={item.id} border={true} />
+                })
             }
         </div>
     )

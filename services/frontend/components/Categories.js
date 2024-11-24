@@ -1,10 +1,12 @@
 "use client"
 import React from "react"
+import { useRouter } from "next/navigation"
 
-import { GetCategories } from "@/utils/blogAPIFunc"
+import { GetCategories } from "@/utils/blogFunc"
 
 function Categories() {
     const [categories, setCategories] = React.useState([])
+    const router = useRouter()
 
     const getCategories = async () => {
         let categories = await GetCategories()
@@ -28,12 +30,15 @@ function Categories() {
                     {
                         categories.map((category, index) => {
                             return (
-                                <li key={index} className="cursor-pointer">
+                                <li onClick={() => router.push("/category/" + category.id)} key={index} className="cursor-pointer">
                                     {category.name}
                                 </li>
                             )
                         })
                     }
+                    <li onClick={() => router.push("/")} className="cursor-pointer">
+                        All
+                    </li>
                 </ul>
             </div>
         </div>

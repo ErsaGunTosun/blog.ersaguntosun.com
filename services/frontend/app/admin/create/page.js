@@ -5,7 +5,7 @@ import MarkdownEditor from '@uiw/react-markdown-editor';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from "react-icons/md";
 
 import CategoriesDropdown from '@/components/CategoriesDropdown';
-import { CreatePost } from '@/utils/adminAPIFunc';
+import { CreatePost } from '@/utils/adminFunc';
 
 function createPage() {
   const [isFieldVisible, setIsFieldVisible] = React.useState(true)

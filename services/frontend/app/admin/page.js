@@ -8,8 +8,8 @@ import Post from '@/components/Post';
 import Panel from '@/components/Panel';
 
 // API
-import { DeletePost } from '@/utils/adminAPIFunc';
-import { GetPosts } from '@/utils/blogAPIFunc';
+import { DeletePost } from '@/utils/adminFunc';
+import { GetPosts } from '@/utils/blogFunc';
 
 function AdminPage() {
   const router = useRouter();

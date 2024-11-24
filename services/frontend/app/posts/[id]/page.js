@@ -8,7 +8,7 @@ import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 
 //API
-import { GetPost,GetCategoriesWithID } from "@/utils/blogAPIFunc"
+import { GetPost,GetCategoriesWithID } from "@/utils/blogFunc"
 
 
 export default function Posts({ params }) {

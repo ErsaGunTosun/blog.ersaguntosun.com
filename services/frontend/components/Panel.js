@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import { Logout } from '../utils/adminAPIFUnc'
+import { Logout } from '../utils/adminFunc'
 
 function Panel() {
     const router = useRouter()
