@@ -2,10 +2,11 @@
 import React from 'react'
 import Post from '@/components/Post'
 
+import PageNavigations from './PageNavigations';
 
 import { GetPosts, GetPostsWithID } from '@/utils/blogFunc';
 
-function Posts({ isPosts, id = 0 }) {
+function Posts({ isPosts, id = 0, page }) {
     const [posts, setPosts] = React.useState([])
     const getAllPosts = async () => {
         let postsReq = await GetPosts()
@@ -31,8 +32,17 @@ function Posts({ isPosts, id = 0 }) {
     }, [])
 
     React.useEffect(() => {
-        console.log(posts)
     }, [posts])
+
+    const pageNumbers = ()=>{
+        let numbers = []
+        let item = Math.round(posts.length % 5)
+        for(var  i= 0; i < item; i++){
+            numbers.push(i)
+        }
+
+        return numbers
+    }
 
     return (
         <div>
@@ -43,10 +53,17 @@ function Posts({ isPosts, id = 0 }) {
                 </div>
             }
             {
-                posts.map((item) => {
-                    return <Post post={item} key={item.id} border={true} />
-                })
+                posts.map((item,index) => {
+                    if(index < (5*page) && index >= ((page-1)*5)){ {
+                        return <Post post={item} key={item.id} border={false} />
+                    }
+                }})
             }
+            {
+                posts.length > 0 &&
+                <PageNavigations pageNumbers={pageNumbers()} currentPage={page}/>
+            }
+           
         </div>
     )
 }
