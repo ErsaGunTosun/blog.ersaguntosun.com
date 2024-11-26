@@ -3,8 +3,8 @@ import { useRouter } from 'next/navigation';
 import React from 'react'
 import axios from 'axios';
 
-import Header from '@/components/Header';
-import Post from '@/components/Post';
+import Header from '@/components/Header/Header';
+import Post from '@/components/Post/Post';
 import Panel from '@/components/Panel';
 
 // API

@@ -1,8 +1,8 @@
 'use client';
 import React from 'react'
-import Post from '@/components/Post'
+import Post from '@/components/Post/Post'
 
-import PageNavigations from './PageNavigations';
+import PageNavigations from './PageNavigation/PageNavigations';
 
 import { GetPosts, GetPostsWithID } from '@/utils/blogFunc';
 

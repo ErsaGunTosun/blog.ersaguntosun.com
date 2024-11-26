@@ -2,10 +2,9 @@
 import React from "react";
 
 import MarkdownEditor from "@uiw/react-markdown-editor"
-import Categories from "@/components/Categories"
-import Content from "@/components/Content"
-import Header from "@/components/Header"
-import Footer from "@/components/Footer"
+import Categories from "@/components/Categories/Categories"
+import Header from "@/components/Header/Header"
+import Footer from "@/components/Footer/Footer"
 
 //API
 import { GetPost,GetCategoriesWithID } from "@/utils/blogFunc"
@@ -43,7 +42,6 @@ export default function Posts({ params }) {
   return (
     <div className="h-full w-full">
       <Categories />
-      <Content />
       <Header />
       <div className="xl:px-88 lg:px-28 md:px-12 px-4">
         <div className="post my-12 pb-10">

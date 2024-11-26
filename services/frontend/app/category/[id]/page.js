@@ -1,10 +1,8 @@
 'use client';
-import Categories from "@/components/Categories";
-import Header from "@/components/Header";
+import Categories from "@/components/Categories/Categories";
+import Header from "@/components/Header/Header";
 import Posts from "@/components/Posts";
-import Post from "@/components/Post";
-import PageNavigations from "@/components/PageNavigations";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer/Footer";
 
 import React from "react";
 import { useSearchParams } from 'next/navigation'

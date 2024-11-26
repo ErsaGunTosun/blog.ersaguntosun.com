@@ -1,16 +1,17 @@
 'use client';
 
-import Categories from "@/components/Categories";
-import Header from "@/components/Header";
+import Categories from "@/components/Categories/Categories";
+import Header from "@/components/Header/Header";
 import Posts from "@/components/Posts";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer/Footer";
 import { useSearchParams } from "next/navigation";
 
-export default function Home() {
 
+
+export default function Home() {
   const searchParams = useSearchParams();
   let page = searchParams.get("page") || 1;
-
+  
   return (
     <div className="h-full w-full">
       <Categories />
