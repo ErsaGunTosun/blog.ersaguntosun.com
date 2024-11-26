@@ -24,9 +24,6 @@ function Post({ post, border }) {
         }
     }, [])
 
-    React.useEffect(() => {
-        console.log(categories)
-    }, [categories])
 
 
     return (

@@ -6,7 +6,7 @@ import PageNavigations from './PageNavigations';
 
 import { GetPosts, GetPostsWithID } from '@/utils/blogFunc';
 
-function Posts({ isPosts, id = 0, page }) {
+function Posts({ isPosts, id = 0, page=1, path="/"}) {
     const [posts, setPosts] = React.useState([])
     const getAllPosts = async () => {
         let postsReq = await GetPosts()
@@ -36,11 +36,11 @@ function Posts({ isPosts, id = 0, page }) {
 
     const pageNumbers = ()=>{
         let numbers = []
-        let item = Math.round(posts.length % 5)
+        // let item = posts.length > 5 && posts.length % 5 != 0? Math.round(posts.length % 5): Math.round(posts.length / 5)
+        let item = Math.ceil(posts.length / 5)
         for(var  i= 0; i < item; i++){
             numbers.push(i)
         }
-
         return numbers
     }
 
@@ -61,7 +61,7 @@ function Posts({ isPosts, id = 0, page }) {
             }
             {
                 posts.length > 0 &&
-                <PageNavigations pageNumbers={pageNumbers()} currentPage={page}/>
+                <PageNavigations pageNumbers={pageNumbers()} currentPage={page} path={path}/>
             }
            
         </div>

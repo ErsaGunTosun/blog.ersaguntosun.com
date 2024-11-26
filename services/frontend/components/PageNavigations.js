@@ -1,13 +1,13 @@
 import React from "react"
 
-function PageNavigations({pageNumbers, currentPage = 1 }) {
+function PageNavigations({pageNumbers, currentPage = 1 , path}) {
     let pageId = parseInt(currentPage)
     return (
         <div className="w-full my-12 text-center">
             <p>
                 {
                     pageId != pageNumbers[0] + 1 &&
-                    <a href={`/${parseInt(currentPage) - 1}`}
+                    <a href={`${path}${parseInt(currentPage) - 1}`}
                         className="text-black py-3 px-4 rounded-xl hover:underline hover:underline-offset-2 hover:decoration-1 hover:decoration-dotted cursor-pointer">
                         « Previous
                     </a>
@@ -26,7 +26,7 @@ function PageNavigations({pageNumbers, currentPage = 1 }) {
                 }
                 {
                     pageId != pageNumbers[pageNumbers.length - 1] + 1 &&
-                    <a href={`/${parseInt(currentPage) + 1}`}
+                    <a href={`${path}${parseInt(currentPage) + 1}`}
                         className="text-black py-3 px-4 rounded-xl hover:underline hover:underline-offset-2 hover:decoration-1 hover:decoration-dotted cursor-pointer">
                         Next »
                     </a>
