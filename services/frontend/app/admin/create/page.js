@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from "react-icons/md";
 
+import Modal from '@/components/Modal/Modal';
 import CategoriesDropdown from '@/components/CategoriesDropdown';
 import { CreatePost } from '@/utils/adminFunc';
 
@@ -15,6 +16,12 @@ function createPage() {
   const [title, setTitle] = React.useState('')
   const [category, setCategory] = React.useState([])
 
+  // modal
+  const [isModalVisible, setIsModalVisible] = React.useState(false)
+  const [modalStatus, setModalStatus] = React.useState('')
+  const [modalRes, setModalRes ] = React.useState('')
+  const [modalData, setModalData] = React.useState({})
+
   const router = useRouter()
 
   const handleEditorChange = (value, viewUpdate) => {
@@ -23,12 +30,36 @@ function createPage() {
 
   const handlePublish = () => {
     try {
-      CreatePost(title, mdStr, category, introduction)
+      setIsModalVisible(true)
+      setModalStatus('publish')
+      setModalData({title: title, category: category, introduction: introduction, content: mdStr})
     }
     catch (e) {
       console.log(e)
     }
   }
+  const publishPost = async () => {
+    try {
+      await CreatePost(title,mdStr,category,introduction).then((res) => {
+        setIsModalVisible(false)
+        router.push('/admin')
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    }
+    catch (e) {
+      console.log(e)
+    }
+  }
+
+
+  React.useEffect(() => {
+    if (modalRes == 'success')
+    {
+      publishPost()
+    }
+  },[modalRes])
   return (
     <div className='w-full h-full'>
       <div className='w-full h-full flex flex-col px-10'>
@@ -59,9 +90,9 @@ function createPage() {
               </div>
 
               <div>
-                <label for="message" class="block mb-2 text-sm font-medium text-gray-500">Introduction</label>
+                <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-500">Introduction</label>
                 <textarea id="message" rows="4" maxLength={500} value={introduction} onChange={(e) => setIntroduction(e.target.value)}
-                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 border border-gray-300  outline-none" placeholder="Write your here...">
+                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 border border-gray-300  outline-none" placeholder="Write your here...">
                 </textarea>
                 <p className='text-xs text-gray-400 text-end'>{500-introduction.length}</p>
               </div>
@@ -94,7 +125,8 @@ function createPage() {
             </button>
           </div>
         </div>
-
+          
+        <Modal isVisible={isModalVisible} setVisible={setIsModalVisible} Status={modalStatus} res={setModalRes} />
 
       </div>
 

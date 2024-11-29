@@ -6,6 +6,7 @@ import axios from 'axios';
 import Header from '@/components/Header/Header';
 import Post from '@/components/Post/Post';
 import Panel from '@/components/Panel';
+import Modal from '@/components/Modal/Modal';
 
 // API
 import { DeletePost } from '@/utils/adminFunc';
@@ -17,6 +18,11 @@ function AdminPage() {
   const [posts, setPosts] = React.useState([])
   const [deleteStatus, setDeleteStatus] = React.useState('')
 
+  const [isModalVisible, setIsModalVisible] = React.useState(false)
+  const [modalStatus, setModalStatus] = React.useState('')
+  const [modalRes, setModalRes ] = React.useState('')
+  const [modalData, setModalData] = React.useState({})
+
   const getAllPosts = async () => {
     let postsReq = await GetPosts()
     setPosts(postsReq.data)
@@ -25,6 +31,13 @@ function AdminPage() {
   const deletePost = async (id) => {
     let status = await DeletePost(id, router)
     setDeleteStatus(status)
+    setIsModalVisible(false)
+  }
+
+  const deletteHandler = (id) => {
+    setModalStatus('delete')
+    setIsModalVisible(true)
+    setModalData({id: id})
   }
 
 
@@ -64,8 +77,20 @@ function AdminPage() {
   React.useEffect(() => {
     if (deleteStatus === 'success') {
       getAllPosts()
+      setDeleteStatus('')
     }
   }, [deleteStatus])
+
+  React.useEffect(() => {
+    if (modalRes === 'success') {
+      deletePost(modalData.id)
+      setModalData({})
+      deletePost()
+      setModalRes('')
+      setDeleteStatus('success')
+      setIsModalVisible(false)
+    }
+  }, [modalRes])
 
   return (
     <div className="h-full w-full">
@@ -78,8 +103,8 @@ function AdminPage() {
               return (
                 <div key={post.id} className='post-border mb-10'>
                   <Post post={post} border={false} />
-                  <button 
-                    onClick={() => deletePost(post.id)}
+                  <button
+                    onClick={() => deletteHandler(post.id)}
                     type="button" className="text-red-700 hover:underline hover:underline-offset-2 hover:decoration-1 hover:decoration-dotted  font-bold rounded-lg text-sm px-3 py-2.5 text-center mb-2">
                     Delete Post
                   </button>
@@ -87,10 +112,12 @@ function AdminPage() {
                     type="button" className="text-blue-700 hover:underline hover:underline-offset-2 hover:decoration-1 hover:decoration-dotted font-bold rounded-lg text-sm px-3 py-2.5 text-center mb-2">
                     Edit Post
                   </button>
+
                 </div>
               )
             })
           }
+          <Modal isVisible={isModalVisible} setVisible={setIsModalVisible} Status={modalStatus} res={setModalRes} data={modalData}/>
         </div>
       </div>
 

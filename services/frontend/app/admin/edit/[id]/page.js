@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from "react-icons/md";
 
+import Modal from '@/components/Modal/Modal';
 import CategoriesDropdown from '@/components/CategoriesDropdown';
 
 //API
@@ -22,6 +23,12 @@ function editpage({params}) {
   const [category, setCategory] = React.useState([])
 
   const router = useRouter()
+
+  // modal
+  const [isModalVisible, setIsModalVisible] = React.useState(false)
+  const [modalStatus, setModalStatus] = React.useState('')
+  const [modalRes, setModalRes ] = React.useState('')
+  const [modalData, setModalData] = React.useState({})
 
   const getPostData = async () => {
     try {
@@ -44,7 +51,18 @@ function editpage({params}) {
     }
   }
 
-      
+  
+  const updateHandler = async () => { 
+    try {
+      const res = await UpdatePost(title,mdStr,category,introduction,params.id).then(res => {
+        setIsModalVisible(false)
+        router.push('/admin')
+      })
+    }
+    catch (e) {
+      console.log(e)
+    }
+  }
       
 
   const handleEditorChange = (value, viewUpdate) => {
@@ -52,12 +70,14 @@ function editpage({params}) {
   }
 
   const handleUpdate = () => {
-    try {
-      UpdatePost(title, mdStr, category, introduction,post.id)
-    }
-    catch (e) {
-      console.log(e)
-    }
+    setIsModalVisible(true)
+    setModalStatus('update')
+    setModalData({
+      title: title,
+      content: mdStr,
+      introduction: introduction,
+      category: category
+    })
   }
 
   React.useEffect(() => {
@@ -71,6 +91,12 @@ function editpage({params}) {
       console.log(e)
     }   
   }, [])
+
+  React.useEffect(() => {
+    if (modalStatus === 'update') {
+      updateHandler()
+    }
+  }, [modalRes])
 
   React.useEffect(() => {
     if (post.id !== undefined) {
@@ -148,7 +174,7 @@ function editpage({params}) {
           </div>
         </div>
 
-
+        <Modal isVisible={isModalVisible} setVisible={setIsModalVisible} Status={modalStatus} res={setModalRes} />
       </div>
 
     </div >
