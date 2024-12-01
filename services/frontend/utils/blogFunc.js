@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function  GetPosts() {
+export async function GetPosts() {
     try {
         let posts = await axios({
             method: 'get',
@@ -15,45 +15,45 @@ export async function  GetPosts() {
     }
 }
 
-export async function GetPost(id){
-    try{
+export async function GetPost(id) {
+    try {
         let post = await axios({
-            method:"get",
-            url:`http://localhost:8080/api/posts/${id}`,
-            withCredentials:true
+            method: "get",
+            url: `http://localhost:8080/api/posts/${id}`,
+            withCredentials: true
         })
         return post
     }
-    catch(error){
+    catch (error) {
         console.log(error)
     }
 }
 
-export async function GetPostsWithID (id) {
-    try{
+export async function GetPostsWithID(id) {
+    try {
         let posts = await axios({
             method: 'get',
-            url: `http://localhost:8080/api/categories/`+id,
+            url: `http://localhost:8080/api/categories/` + id,
             withCredentials: true,
         })
-        
+
         return posts
     }
-    catch(err){
+    catch (err) {
         console.log(err)
-    }    
+    }
 }
 
 // Category 
 
-export async function  GetCategories() {
+export async function GetCategories() {
     try {
         let categories = await axios({
             method: 'get',
             url: `http://localhost:8080/api/categories`,
             withCredentials: true,
         })
-        
+
         return categories
     }
     catch (error) {
@@ -61,21 +61,21 @@ export async function  GetCategories() {
     }
 }
 
-export async function GetCategoriesWithID(id){
-    try{
+export async function GetCategoriesWithID(id) {
+    try {
         let categories = await axios({
-            method:"get",
-            url:"http://localhost:8080/api/categories/posts/"+id,
-            withCredentials:true,
-            headers:{
+            method: "get",
+            url: "http://localhost:8080/api/categories/posts/" + id,
+            withCredentials: true,
+            headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `${localStorage.getItem('token')}`
             }
         })
-    
+
+
         return categories;
     }
-    catch(e){
+    catch (e) {
         console.log(e)
     }
 }

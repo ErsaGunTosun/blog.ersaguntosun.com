@@ -1,4 +1,3 @@
-
 import Search from "../Search"
 import { BsArrowReturnRight } from "react-icons/bs";
 
@@ -9,8 +8,8 @@ function Footer() {
                 <Search />
             </div>
             <p className="flex justify-center">
-                Found something wrong, broken, or just have feedback? 
-                <span className="flex items-center font-bold mx-1 cursor-pointer"> <BsArrowReturnRight/> Please let me know.</span> Thanks!
+                Found something wrong, broken, or just have feedback?
+                <span className="flex items-center font-bold mx-1 cursor-pointer"> <BsArrowReturnRight /> Please let me know.</span> Thanks!
             </p>
             <p className="text-sm">
                 © 2024 John Mueller. The example code, unless otherwise noted, is released under MIT license and may be used appropriately.

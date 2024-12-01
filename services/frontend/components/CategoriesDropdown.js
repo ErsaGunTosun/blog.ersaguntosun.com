@@ -26,7 +26,7 @@ const CategoriesDropdown = ({ category, setCategory }) => {
         setInputValue(e.target.value);
 
         if (query) {
-            if(!category.includes(query)){
+            if (!category.includes(query)) {
                 const filtered = options.filter(
                     (option) =>
                         option.toLowerCase().includes(query) &&

@@ -1,35 +1,13 @@
-'use client';
-import React from "react"
-
 import { GetCategoriesWithID } from "@/utils/blogFunc"
 
-function Post({ post, border }) {
-    const [categories, setCategories] = React.useState([])
+async function Post({ post, border }) {
+    let categories = await GetCategoriesWithID(post.id)
     let date = new Date(post.created_at)
-
-    const getAllCategories = async () => {
-        try {
-            let response = await GetCategoriesWithID(post.id)
-            setCategories(response.data)
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    React.useEffect(() => {
-        try {
-            getAllCategories()
-        } catch (e) {
-            console.log(e)
-        }
-    }, [])
-
-
 
     return (
         <div className={border ? "post-border my-12 pb-10" : "post my-2 pb-2"}>
 
-            <a href={"posts/"+post.id} className="post-title text-3xl font-bold hover:underline hover:underline-offset-8 hover:decoration-1 hover:decoration-dotted cursor-pointer">
+            <a href={"post/" + post.id} className="post-title text-3xl font-bold hover:underline hover:underline-offset-8 hover:decoration-1 hover:decoration-dotted cursor-pointer">
                 {post.title}
             </a>
             <p className="text-black">
@@ -38,11 +16,10 @@ function Post({ post, border }) {
                 }
                 -
                 {
-                    categories?.map(item=>{
-                        return <span key={item?.id} className="category"> · {item?.name} </span> 
+                    categories.data?.map(item => {
+                        return <span key={item?.id} className="category"> · {item?.name} </span>
                     })
                 }
-
             </p>
             <p className="my-6">
                 {post.introduction}
