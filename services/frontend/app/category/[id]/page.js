@@ -12,7 +12,7 @@ export default function Category({ params }) {
       <div className="xl:px-88 lg:px-28 md:px-12 px-4">
         <div className="w-full">
           <h1 className="text-base pt-4">If you're looking for secret background information to Google Search, you've come to the wrong place.</h1>
-          <Posts isPosts={false} id={params.id} page={1} path={"/"} />
+          <Posts isPosts={false} id={params.id} page={1} path={"/category/"+params.id+"/"} />
         </div>
         <Footer />
       </div>
