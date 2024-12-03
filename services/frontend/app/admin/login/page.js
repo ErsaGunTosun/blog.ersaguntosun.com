@@ -20,7 +20,6 @@ function LoginPage() {
             withCredentials: true,
             headers:{
                 'Content-Type': 'application/json',
-                'Authorization': `${localStorage.getItem('token')}`
             }
           },
         )
@@ -40,8 +39,6 @@ function LoginPage() {
 
 
     const login = (e) => {
-        console.log(email, password)
-
         try {
             axios({
                 method: 'post',
@@ -70,7 +67,6 @@ function LoginPage() {
         catch (err) {
             setError(true)
         }
-
     }
 
     const inputhandler = (e) => {

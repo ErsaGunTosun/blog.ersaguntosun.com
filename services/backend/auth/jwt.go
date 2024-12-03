@@ -37,15 +37,15 @@ func ValidateJWT(tokenString string) (*jwt.Token, error) {
 }
 
 func AuthUserJWT(w http.ResponseWriter, r *http.Request) (int, error) {
-	headerToken := r.Header.Get("Authorization")
+	// headerToken := r.Header.Get("Authorization")
 	cookieToken, err := r.Cookie("token")
 	if err != nil {
 		return 0, fmt.Errorf("unauthorized")
 	}
 
-	if headerToken != cookieToken.Value {
-		return 0, fmt.Errorf("unauthorized")
-	}
+	// if headerToken != cookieToken.Value {
+	// 	return 0, fmt.Errorf("unauthorized")
+	// }
 
 	token, err := ValidateJWT(cookieToken.Value)
 

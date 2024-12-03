@@ -1,29 +1,40 @@
 import axios from "axios";
 
 // User
-export async function Logout(router) {
+export async function Logout() {
     try {
-        await axios({
+        let status = await axios({
             method: 'get',
             url: `http://localhost:8080/api/auth/logout`,
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `${localStorage.getItem('token')}`
             }
-        }).then((res) => {
-            console.log(res)
-            localStorage.removeItem('token')
-            router.refresh()
-        }).catch((err) => {
-            console.log(err)
         })
+        return status;
     }
     catch (err) {
         console.log(err)
     }
 }
 
+export async function Verify() {
+    try {
+        let status = axios({
+            method: 'get',
+            url: `http://localhost:8080/api/auth/verify`,
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        },)
+        
+        return status;
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
 
 
 // Post

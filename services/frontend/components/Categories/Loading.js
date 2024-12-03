@@ -6,12 +6,12 @@ function CategoriesSkeleton() {
                 <p className="font-bold">Categories</p>
                 <div className="flex justify-end ">
                     <ul className="flex flex-col justify-start w-1/2 space-y-1 animate-pulse ">
-                        <li class="h-2.5 bg-gray-200 rounded w-2/3 ms-auto"></li>
-                        <li class="h-2.5 bg-gray-200 rounded w-1/2 ms-auto"></li>
-                        <li class="h-2.5 bg-gray-200 rounded w-3/4 ms-auto"></li>
-                        <li class="h-2.5 bg-gray-200 rounded w-2/5 ms-auto"></li>
-                        <li class="h-2.5 bg-gray-200 rounded w-3/5 ms-auto"></li>
-                        <li class="h-2.5 bg-gray-200 rounded w-1/4 ms-auto"></li>
+                        <li className="h-2.5 bg-gray-200 rounded w-2/3 ms-auto"></li>
+                        <li className="h-2.5 bg-gray-200 rounded w-1/2 ms-auto"></li>
+                        <li className="h-2.5 bg-gray-200 rounded w-3/4 ms-auto"></li>
+                        <li className="h-2.5 bg-gray-200 rounded w-2/5 ms-auto"></li>
+                        <li className="h-2.5 bg-gray-200 rounded w-3/5 ms-auto"></li>
+                        <li className="h-2.5 bg-gray-200 rounded w-1/4 ms-auto"></li>
                     </ul>
                 </div>
             </div>

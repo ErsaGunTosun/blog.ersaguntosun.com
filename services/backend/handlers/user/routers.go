@@ -110,16 +110,9 @@ func (h *UserHandler) registerHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *UserHandler) verifyHandler(w http.ResponseWriter, r *http.Request) {
-	headerToken := r.Header.Get("Authorization")
 	cookieToken, err := r.Cookie("token")
 	if err != nil {
 		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("not authorized"))
-		return
-	}
-
-	if headerToken != cookieToken.Value {
-		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("not authorized"))
-
 		return
 	}
 
