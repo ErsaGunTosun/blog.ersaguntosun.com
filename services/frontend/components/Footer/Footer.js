@@ -1,4 +1,4 @@
-import Search from "../Search"
+import Search from "../Search/Search"
 import { BsArrowReturnRight } from "react-icons/bs";
 
 function Footer() {
