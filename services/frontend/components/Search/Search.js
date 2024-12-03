@@ -88,7 +88,7 @@ function Search() {
               key={index}
               onClick={() => { router.push("/post/" + option.id) }}
               className="cursor-pointer hover:bg-gray-200 px-3 py-2"
-            >p
+            >
               <a href={"/post/" + option.id} className="post-title text-sm font-bold hover:underline hover:underline-offset-8 hover:decoration-1 hover:decoration-dotted cursor-pointer">
                 {option.title}
               </a>
