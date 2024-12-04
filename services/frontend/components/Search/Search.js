@@ -69,7 +69,7 @@ function Search() {
 
   return (
     <div className="h-full">
-      <div className="flex items-center">
+      <div className="flex items-center ">
         <input type="text" id="search_input"
           autoComplete="off"
           value={inputValue}
@@ -79,26 +79,28 @@ function Search() {
           placeholder="search..." required />
         <MdSearch className="text-black text-xl ms-2" />
       </div>
-      {isDropdownVisible && (
-        <ul
-          className="absolute flex flex-col z-10 mt-1 w-full bg-white text-black border border-gray-400  shadow-lg max-h-60 overflow-auto"
-        >
-          {filteredOptions.length > 0 && filteredOptions.map((option, index) => (
-            <li
-              key={index}
-              onClick={() => { router.push("/post/" + option.id) }}
-              className="cursor-pointer hover:bg-gray-200 px-3 py-2"
-            >
-              <a href={"/post/" + option.id} className="post-title text-sm font-bold hover:underline hover:underline-offset-8 hover:decoration-1 hover:decoration-dotted cursor-pointer">
-                {option.title}
-              </a>
+      <div className="relative w-full">
+        {isDropdownVisible && (
+          <ul
+            className="absolute flex flex-col bg-white z-10 mt-1 w-full mx-auto text-black border border-gray-400  shadow-lg max-h-28 md:max-h-60  overflow-auto"
+          >
+            {filteredOptions.length > 0 && filteredOptions.map((option, index) => (
+              <li
+                key={index}
+                onClick={() => { router.push("/post/" + option.id) }}
+                className="cursor-pointer hover:bg-gray-200 px-3 py-2"
+              >
+                <a href={"/post/" + option.id} className="post-title text-sm font-bold hover:underline hover:underline-offset-8 hover:decoration-1 hover:decoration-dotted cursor-pointer">
+                  {option.title}
+                </a>
 
-              <p className="text-black text-xs">
-                {option.introduction}
-              </p>
-            </li>))}
-        </ul>
-      )}
+                <p className="text-black text-xs">
+                  {option.introduction}
+                </p>
+              </li>))}
+          </ul>
+        )}
+      </div>
     </div>
   )
 }
