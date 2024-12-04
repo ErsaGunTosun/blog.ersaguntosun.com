@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Editor from '@/components/Editor/Editor';
 import Modal from '@/components/Modal/Modal';
 import PostDetails from '@/components/PostDetails/PostDetails';
-import { CreatePost } from '@/utils/adminFunc';
+import { CreatePost, Verify } from '@/utils/adminFunc';
 
 function createPage() {
   const [title, setTitle] = React.useState('')
@@ -58,6 +58,19 @@ function createPage() {
       publishPost()
     }
   }, [modalRes])
+
+  React.useEffect(() => {
+    let verify = Verify().then((res) => {
+      if (res.status != 200) {
+        window.location.href = '/admin/login'
+      }
+    }).catch((err) => {
+      if(err.response.status == 401) {
+        window.location.href = '/admin/login'
+      }
+      console.log(err)
+    })
+  }, [])
 
   return (
     <div className='w-full h-full'>

@@ -8,7 +8,7 @@ import Editor from '@/components/Editor/Editor';
 
 //API
 import { GetPost, GetCategoriesWithID } from '@/utils/blogFunc';
-import { UpdatePost } from '@/utils/adminFunc';
+import { UpdatePost,Verify } from '@/utils/adminFunc';
 
 
 function editpage({ params }) {
@@ -91,6 +91,19 @@ function editpage({ params }) {
     }
   }, [])
 
+  React.useEffect(() => {
+    let verify = Verify().then((res) => {
+      if (res.status != 200) {
+        window.location.href = '/admin/login'
+      }
+    }).catch((err) => {
+      if(err.response.status == 401) {
+        window.location.href = '/admin/login'
+      }
+      console.log(err)
+    })
+  }, [])
+  
   React.useEffect(() => {
     if (modalStatus === 'update') {
       updateHandler()
