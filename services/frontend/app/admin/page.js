@@ -1,7 +1,7 @@
 'use client';
 import React from 'react'
 import Header from '@/components/Header/Header';
-import Panel from '@/components/Panel';
+import Panel from '@/components/Panel/Panel';
 import PostControl from '@/components/PostsControl/PostControl';
 
 // API
