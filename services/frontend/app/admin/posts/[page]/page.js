@@ -4,20 +4,21 @@ import Header from '@/components/Header/Header';
 import Panel from '@/components/Panel/Panel';
 import PostControl from '@/components/PostsControl/PostControl';
 
-// API
+
 import { Verify } from '@/utils/adminFunc';
 
 
-function AdminPage() {
+function PostsPage({params}) {
   React.useEffect(() => {
     let verify = Verify().then((res) => {
       if (res.status != 200) {
         window.location.href = '/admin/login'
       }
+      
     }).catch((err) => {
-      if(err.response.status == 401) {
-        window.location.href = '/admin/login'
-      }
+        if(err.response.status === 401) {
+            window.location.href = '/admin/login'
+        }
       console.log(err)
     })
   }, [])
@@ -29,7 +30,7 @@ function AdminPage() {
       
       <div className="xl:px-88 lg:px-28 md:px-12 px-4">
         <div className="w-full">
-          <PostControl page={1} path={"/admin/posts/"} />
+          <PostControl page={params.page} path={"/admin/posts/"} />
         </div>
       </div>
 
@@ -37,4 +38,4 @@ function AdminPage() {
   )
 }
 
-export default AdminPage
+export default PostsPage
