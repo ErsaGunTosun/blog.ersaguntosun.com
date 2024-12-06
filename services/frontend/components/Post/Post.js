@@ -11,9 +11,8 @@ async function Post({ post, border }) {
             </a>
             <p className="text-black">
                 {
-                    date.toDateString() + " "
+                    date.toDateString() 
                 }
-                -
                 {
                     categories.data?.map(item => {
                         return <span key={item?.id} className="category"> · {item?.name} </span>
@@ -23,8 +22,8 @@ async function Post({ post, border }) {
             <p className="my-6">
                 {post.introduction}
             </p>
-            <a className="cursor-pointer underline underline-offset-4 decoration-1 decoration-dotted">
-                Midjourney / Discord to Lightroom automation - step by step - for 2023 »
+            <a href={"/post/" + post.id} className="cursor-pointer underline underline-offset-4 decoration-1 decoration-dotted">
+                {categories.data[0]?.name + " | " +post.title + " - " + date.getFullYear() + " »"}
             </a>
         </div>
     )

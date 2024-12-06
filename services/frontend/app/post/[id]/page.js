@@ -22,7 +22,7 @@ export default async function PostPage({ params }) {
             {post.data.title}
           </a>
           <p>
-            {date.toDateString()}-
+            {date.toDateString()}
             {
               categories.data?.map(item => {
                 return <span key={item?.id} className="category"> · {item?.name} </span>

@@ -57,7 +57,7 @@ function PostControl({id = 0, page = 1, path = "/"}) {
       setModalRes('')
       setDeleteStatus('success')
       setIsModalVisible(false)
-      if (((posts.length-1) / 5) <= page) {
+      if (((posts.length-1) / 5) <= page && page > 1) {
         router.push('/admin/posts/'+(page-1))
       }
     }
